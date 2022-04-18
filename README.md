@@ -13,10 +13,10 @@ Outside of it being technically challenging it would provide a testing ground fo
 ## How would I solve the challenge:
 I would use Unity for most of the elements up to the simulation as it would save me time setting up the UI and the 3D model of the hardware that the user wants to test. Once all of those inputs are set a script would run the simulation and send data to a tactical view so that the user can see in real-time what is happening. If I find that running the simulation takes too much time I could make it so the simulation runs completely and then can be viewed in the tactical view.
 
-I would use TACVIEW (tacview.net) as the tactical viewer. This means that I would need to generate files in ‘.acmi’ and export the mesh of the vehicle in ‘.obj’. TACVIEW is not free of use and if I was to distribute my software I would need to purchase an enterprise license.
+I would use [TACVIEW](https://www.tacview.net/) as the tactical viewer. This means that I would need to generate files in ‘.acmi’ and export the mesh of the vehicle in ‘.obj’. TACVIEW is not free of use and if I was to distribute my software I would need to purchase an enterprise license.
 I want to use TACVIEW as it is the most feature-rich flight data analysis tool available and pretty much every single feature would be useful in the case of this simulation.
 
-To allow the user to set the location of the simulation I would like to provide a globe view that gets increasingly better texture when you zoom in. I would do this by sub-diving a sphere into many squares and changing the displayed texture to the square closer to the camera’s centre.
+To allow the user to set the location of the simulation on the world I would like to provide a globe view that gets increasingly better texture when you zoom in. I would do this by sub-diving a sphere into many squares and changing the displayed texture to the square closer to the camera’s centre.
 
 The AI would be divided into two. A CommandAI that gives objectives to other Command AI repeating all the way down to UnitAI. This would allow for simulation of things like electronic warfare or breakdown of communication as not all commands would be capable of communicating with all units at a given time.<br>
 The CommandAI would be hard coded to give objective to smaller based on the information it has at a given time, the objective it has, and the kind of role the AI expect its unit or subcommand to succeed in. The user would only set the objective for the highest commandAI.<br>
