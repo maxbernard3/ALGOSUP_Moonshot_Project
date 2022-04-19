@@ -4,7 +4,7 @@ There are communities on the internet which spends their times digging up cold w
 Similarly many communities about military hardware and doctrine wonder how different equipment and tactics could have performed when facing circumstances that they never had the opportunity to.<br>
 Neither case has a good solution. At best wargame simulation like *Jane’s Fleet Command* and *Command Modern Operations* allow for some testing but are limited in there choice of hardware and are tactical simulator more than anything.
 
-I am limiting  myself to cold war as more modern concept and prototype are still largely clasified and use technologie to wich I could only guess the performances of. I won't gear the simulation to handle anything older than the 40s either as I have to limit the scope of the project.
+I am limiting myself to the cold war as more modern concepts and prototypes are still largely classified and use technologies to which I could only guess the performances of. I won't gear the simulation to handle anything older than the 40s either as I have to limit its scope.
 
 ## Why I think it is interesting to solve:
 It would be technically challenging as a moonshot project. The way I envision this simulation, I would have to make an AI that would change its tactic depending on what the user set as its doctrine, while also adapting itself to some of the crazy hardware that could be created on either side of a battlefield.<br>
@@ -17,11 +17,15 @@ I would use Unity for most of the elements up to the simulation as it would save
 
 I would likely need to write a custom physic engine instead of using unity's one. The simulation would take place in unity, to make use of the 3D engine and built in fonction. But to simulate undreds of vehicle I think a very simplyfied phisic system is needed. I also need very fine controle over the behavior of physic.
 
-I would use [TACVIEW](https://www.tacview.net/) as the tactical viewer. This means that I would need to generate files in ‘.acmi’ and export the mesh of the vehicle in ‘.obj’. TACVIEW is not free of use and if I was to distribute my software I would need to purchase an enterprise license.
-I want to use TACVIEW as it is the most feature-rich flight data analysis tool available and pretty much every single feature would be useful in the case of this simulation.
+I would use [TACVIEW](https://www.tacview.net/) as the tactical viewer. This means that I would need to generate files in ‘[.acmi](https://www.tacview.net/documentation/acmi/en/)’ or '[.csv](https://www.tacview.net/documentation/csv/en/)' and export the mesh of the vehicle in ‘.obj’. TACVIEW is not free of use and if I want to distribute my software I would need to purchase an enterprise license.
+I think TACVIEW is the right tool as it is the most feature-rich flight data analysis tool available and pretty much every single feature would be useful in the case of this simulation.
 
 To allow the user to set the location of the simulation on the world I would like to provide a globe view that gets increasingly better texture when you zoom in. I would do this by sub-diving a sphere into many squares and changing the displayed texture to the square closer to the camera’s centre.
 
-The AI would be divided into two. A CommandAI that gives objectives to other Command AI repeating all the way down to UnitAI. This would allow for simulation of things like electronic warfare or breakdown of communication as not all commands would be capable of communicating with all units at a given time.<br>
-The CommandAI would be hard coded to give objective to smaller based on the information it has at a given time, the objective it has, and the kind of role the AI expect its unit or subcommand to succeed in. The user would only set the objective for the highest commandAI.<br>
-The UnitAI would also be hard codded, this time deciding how to behave itself based on what the hardware’s sensors can see, what was its last objective, and a bit more emotions. The emotion would be something simple. Like an isolated unit being more prone to retreating even against orders.
+The AI would be divided into several sub AI. An AI would have command over units, those units would have a command AI of their own and smaller sub-units all the way down to the individual aircraft/ship/etc...
+#### AI case 1 : Machine learning
+If I can get the program lightweight enough I envision using Machine Learning and Neural Network to train the AI against itself. The AI could represent different tactics by changing the reward of actions. I will admit that I do know enough about ML yet to make this too serious, but it is something to consider
+
+#### AI case 2 : Tactical AI
+If case 1 won't go as planned I would need to code AI the traditional way. diferent tactics would probably simply result in diferent way to generate the Influence map and and the path finding.<br>
+On pathfinding : I think that in this case using Interactive-Deepening A* is the best way to go about it. The V.0 would likely mostly center on aircraft, but a number of thing, like low flying, still need a robust path finding algorithm.
