@@ -2,7 +2,7 @@
 ## What problem do I want to solve:
 There are internet communities that spend their time digging up cold war concepts and experimental design. Those communities would jump at the opportunity to see how those concepts would have performed if pursued further<br>
 Similarly, many communities discussing military hardware and doctrine wonder how different equipment and tactics could have performed when facing circumstances that they never had the opportunity to.<br>
-Neither case has a good solution. At best, wargame simulations like *Jane’s Fleet Command* and *Command Modern Operations* allow for some testing but are limited in their choice of hardware and are tactical simulators more than anything.
+Neither case has a good solution. At best, wargame simulations like [*Jane’s Fleet Command*](https://sonalystscombatsimulations.com/fleet_command/index.html) and [*Command Modern Operations*](https://www.matrixgames.com/game/command-modern-operations) allow for some testing but are limited in their choice of hardware and are tactical simulators more than anything.
 
 I am limiting myself to the cold war as more modern concepts, and prototypes are still largely classified and use technologies to which I could only guess the performances. I will not gear the simulation to handle anything older than the 40s, as I have to limit the project scope.
 
