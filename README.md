@@ -7,7 +7,7 @@ Neither case has a good solution. At best wargame simulation like *Jane’s Flee
 I am limiting myself to the cold war as more modern concepts and prototypes are still largely classified and use technologies to which I could only guess the performances of. I won't gear the simulation to handle anything older than the 40s either as I have to limit its scope.
 
 ## Why I think it is interesting to solve:
-It would be technically challenging as a moonshot project. The way I envision this simulation, I would have to make an AI that would change its tactic depending on what the user set as its doctrine, while also adapting itself to some of the crazy hardware that could be created on either side of a battlefield.<br>
+It would be technically challenging as a moonshot project. The way I envision this simulation, I would have to make an AI that would change its tactic depending on what the user set as its doctrine, while also adapting itself to some of the crazy equipment that could be created on either side of a battlefield.<br>
 Another challenge I set for myself, is having a way to simulate things such as breakdown of communication and delays in command which I have never seen simulated by an AI.<br>
 
 Outside of it being technically challenging it would provide a testing ground for all of those concepts and cold war ideas.
@@ -27,5 +27,5 @@ The AI would be divided into several sub AI. An AI would have command over units
 If I can get the program lightweight enough I envision using Machine Learning and Neural Network to train the AI against itself. The AI could represent different tactics by changing the reward of actions. I will admit that I do know enough about ML yet to make this too serious, but it is something to consider
 
 #### AI case 2 : Tactical AI
-If case 1 won't go as planned I would need to code AI the traditional way. diferent tactics would probably simply result in diferent way to generate the Influence map and and the path finding.<br>
-On pathfinding : I think that in this case using Interactive-Deepening A* is the best way to go about it. The V.0 would likely mostly center on aircraft, but a number of thing, like low flying, still need a robust path finding algorithm.
+If case 1 fails, I would need to code AI the traditional way. different tactics would probably result in different ways to generate the Influence map and pathfinding.<br>
+On pathfinding: I think using Interactive-Deepening A* is the best way to go about it. The V.0 would likely mostly center on aircraft, but some things, like low flying and projectile avoidance, still need a robust pathfinding algorithm.
