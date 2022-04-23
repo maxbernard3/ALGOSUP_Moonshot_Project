@@ -15,8 +15,6 @@ Technical challenge aside, the project would be a great way to wargame abandoned
 ## How would I solve the challenge:
 I would use Unity for most of the elements up to the simulation as it would save me time setting up the UI and the 3D model of the hardware that the user wants to test. After the user finished setting all the inputs, a script would run the simulation and send data to a tactical view so that the user can see in real-time what is happening. If I find that running the simulation takes too much time, I could make it so it runs entirely before the user can view the simulation in the tactical view.
 
-Technical challenge aside, the project would be a great way to wargame abandoned concepts, tactics, and doctrines without dealing with the logistic of an actual wargame.
-
 I would use [TACVIEW](https://www.tacview.net/) as the tactical viewer. This means that I would need to generate files in '[.acmi](https://www.tacview.net/documentation/acmi/en/)' or '[.csv](https://www.tacview.net/documentation/csv/en/)' and export the mesh of the vehicle in '.obj'. TACVIEW is not free of use, and if I want to distribute my software, I would need to purchase an enterprise license.
 I think TACVIEW is the right tool as it is the most feature-rich flight data analysis tool available to the public, and pretty much every single feature would be useful in the case of this simulation.
 
