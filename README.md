@@ -22,7 +22,7 @@ I think TACVIEW is the right tool as it is the most feature-rich flight data ana
 
 To allow the user to set the location of the simulation anywhere in the world, I would like to provide a globe view that gets increasingly better texture when you zoom in. I would do this by sub-diving a sphere into many squares and changing the displayed texture to the squares closest to the camera's centre.
 
-I would divide the AI into several sub-AI. So, an AI would have command over units, and those units would have a commandAI of their own and smaller sub-units down to the individual aircraft/ship/etc... This is so far the best way I have found of simulating the effect of electronic warfare. E.g., commanders could turn off their radio because of ECOM and having delayed or outdated objectives.
+I would divide the AI into several sub-AI. So, an AI would have command over units, and those units would have a commandAI of their own and smaller sub-units down to the individual aircraft/ship/etc... This is so far the best way I have found of simulating the effect of electronic warfare. E.g., commanders could turn off their radio because of [ECOM](https://www.globalsecurity.org/military/library/policy/navy/nrtc/14226_ch3.pdf) and having delayed or outdated objectives.
 #### AI case 1 : Machine learning
 If I can get the program lightweight enough, I envision using Machine Learning or Q-learning and Neural Network to train the AI against itself. The AI could represent different tactics by changing the reward of actions. I will admit that I do know enough about ML yet to elaborate, but it is something to consider
 
