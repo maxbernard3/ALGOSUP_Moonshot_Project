@@ -18,7 +18,7 @@ I would use Unity for most of the elements up to the simulation as it would save
 I would use [TACVIEW](https://www.tacview.net/) as the tactical viewer. This means that I would need to generate files in '[.acmi](https://www.tacview.net/documentation/acmi/en/)' or '[.csv](https://www.tacview.net/documentation/csv/en/)' and export the mesh of the vehicle in '.obj'. TACVIEW is not free of use, and if I want to distribute my software, I would need to purchase an enterprise license.
 I think TACVIEW is the right tool as it is the most feature-rich flight data analysis tool available to the public, and pretty much every single feature would be useful in the case of this simulation.
 
-To allow the user to set the location of the simulation anywhere in the world, I would like to provide a globe view that gets increasingly better texture when you zoom in. I would do this by sub-diving a sphere into many squares and changing the displayed texture to the squares closest to the camera's centre.
+Although I would like to let the user choose its position anywhere in the world, this appears to be infeasible. Instead, I would create a handful of maps by hand using topographic SRTM data, USGS's Earth Explorer, and manually add forested and urban areas
 
 I would divide the AI into several sub-AI. So, an AI would have command over units, and those units would have a commandAI of their own and smaller sub-units down to the individual aircraft/ship/etc... This is so far the best way I have found of simulating the effect of electronic warfare. E.g., commanders could turn off their radio because of [ECOM](https://www.globalsecurity.org/military/library/policy/navy/nrtc/14226_ch3.pdf) and having delayed or outdated objectives.
 #### AI case 1 : Machine learning
