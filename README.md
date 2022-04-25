@@ -1,16 +1,15 @@
 # Moonshot Project
 ## What problem do I want to solve:
-There are internet communities that spend their time digging up cold war concepts and experimental design. Those communities would jump at the opportunity to see how those concepts would have performed if pursued further.<br>
-Similarly, many communities discussing military hardware and doctrine wonder how different equipment and tactics could have performed when facing circumstances that they never had the opportunity to.<br>
-Neither case has a good solution. At best, wargame simulations like [*Jane’s Fleet Command*](https://sonalystscombatsimulations.com/fleet_command/index.html) and [*Command Modern Operations*](https://www.matrixgames.com/game/command-modern-operations) allow for some testing but are limited in their choice of hardware and are wargame tactical simulators ill suited to be a testing ground for new equipment.
+There are internet communities that spend their time digging up cold war concepts and experimental design. People wonder how those concepts could have performed if pushed further.
 
+My Aim is to make a simulation environment to wargame abandoned concepts, tactics, and doctrines without dealing with the logistic of an actual wargame.
 I am limiting myself to the cold war as more modern concepts, and prototypes are still largely classified and use technologies to which I could only guess the performances. I will not gear the simulation to handle anything older than the 40s, as I have to limit the project scope.
 
 ## Why I think it is interesting to solve:
 It would be technically challenging as a moonshot project. The way I envision this simulation, I would have to make an AI that would change its tactic depending on what the user sets as its doctrine while also adapting itself to some of the wide variety of equipment that the user can create on either side of a battlefield.<br>
 Another challenge I set for myself is to simulate things such as breakdown of communication and delays in command, which I have never seen simulated by an AI.<br>
 
-Technical challenge aside, the project would be a great way to wargame abandoned concepts, tactics, and doctrines without dealing with the logistic of an actual wargame
+There are currently no good solutions for simulating fictional equipments and tactics. At best, wargame simulations like [*Jane’s Fleet Command*](https://sonalystscombatsimulations.com/fleet_command/index.html) and [*Command Modern Operations*](https://www.matrixgames.com/game/command-modern-operations) allow for some testing but are limited in their choice of hardware and are wargame tactical simulators ill suited to be a testing ground for new equipment.
 
 ## How would I solve the challenge:
 I would use Unity for most of the elements up to the simulation as it would save me time setting up the UI and the 3D model of the hardware that the user wants to test. After the user finished setting all the inputs, a script would run the simulation and send data to a tactical view so that the user can see in real-time what is happening. If I find that running the simulation takes too much time, I could make it so it runs entirely before the user can view the simulation in the tactical view.
