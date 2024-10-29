@@ -17,24 +17,24 @@ Jira
 *
 *
 
-## B) Introduction
+## Introduction
 
-### 1) Glossary
+### Glossary
 
 | Term used | Definition |
 |---|---|
 |  |  |
 
-### 2) Project Overview
+### Project Overview
 
 <!--- Explain what is the moonshot -->
 The moonshot is a multiple years long project. The project has to be related to computer science and need to be ambitious. A single student will have to define and execute the entire project.
 
-### 3) Project Definition
+### Project Definition
 
 #### ➭ <ins>Vision</ins>
 
-The project is to chart the real time MPG of a vehicle over a commute or busy section of road. Then to show the driver a comparison of his fuel consumption with that of other people using the system on the same route. With the objective to incentivize eco-driving through competition.
+The project is to chart the real time MPG of a vehicle over a commute or busy section of road. Then to show the driver a comparison of his fuel consumption with that of other people using the system on the same route. With the objective to incentivize eco-driving through competition in a leaderboard.
 
 #### ➭ <ins>Stakeholders</ins>
 
@@ -43,7 +43,7 @@ The project is to chart the real time MPG of a vehicle over a commute or busy se
 | Primary Stakeholder & Project Lead : Max BERNARD | Showcasing his ability to lead and execute a project<br> Getting a diploma|
 | CEO at ALGOSUP : Franck Jeannin | Having student in the working world to promote ALGOSUP |
 
-### 4) Scope
+### Scope
 
 #### ➭ <ins>In Scope</ins>
 
@@ -86,11 +86,7 @@ Letting the user create his own route, instead of using the automated route crea
 This is interesting for user in more rural area for whom there might be little traffic to compare against. However such addition would require additional work on the UI and backend, while defeating the social and competitive aspect of the project. Indeed these custom route would likely see very few user and as such wouldn't create competitions.<br>
 The effort necessary to implement the feature are too great, but it would become more relevant if the neutral scoring system is implemented latter as score could be compared between different route.
 <br>
-* <ins>Custom Route :</ins>
-Letting the user create his own route, instead of using the automated route creating system.<br>
-This is interesting for user in more rural area for whom there might be little traffic to compare against. However such addition would require additional work on the UI and backend, while defeating the social and competitive aspect of the project. Indeed these custom route would likely see very few user and as such wouldn't create competitions.<br>
-The effort necessary to implement the feature are too great, but it would become more relevant if the neutral scoring system is implemented latter as score could be compared between different route.
-<br>
+
 
 #### ➭ <ins>Deliverables</ins>
 
@@ -101,7 +97,7 @@ The effort necessary to implement the feature are too great, but it would become
 | POC | prototype hardware and server side code on Github | 22/12/2024 | |
 | MVP | Application, finished hardware, scalable backend | |
 
-### 5) Project Plan
+### Project Plan
 
 #### ➭ <ins>Milestones</ins>
 
@@ -144,33 +140,131 @@ There is an estimated 280 man-hours total to complete this project
 
 <!-- Functional Requirements -->
 
-## C) Functional Requirements
+## Functional Requirements
 
-### 1) Personas Definition
+### Personas Definition
 
-* <ins>Home care agency :</ins>
-The company is looking to encourage it's employee to use less fuel for economic reason. They want to purchase the hardware both to monitor who uses the most fuel but also to create competition amongst the drivers.<br>Most of the employee use the same routes frequently and these employee drive all day longs.
-<br>
-* <ins>Commuter :</ins>
-A person commuting every day between his house in the suburbs and his office on the other side of town. They takes the busy ring road around the city they want to show off to their colleagues how much fuel they are saving by taking this road.<br>
+#### ➭ <ins>Home Care Agency</ins>
+
+**Name:** Sarah Thompson  
+**Age:** 38  
+**Role:** Fleet Manager  
+**Company Size:** 50 employees, primarily home care aides  
+**Goals:**  
+
+* Reduce overall fuel costs for the agency.  
+* Foster a sense of teamwork and friendly competition among employees.  
+* Increase awareness of eco-driving practices.  
+
+**Challenges:**  
+
+* Limited budget for new technology.  
+* Some employees may resist changes to their driving habits.  
+* Need to balance efficiency with providing quality care to clients.  
+
+**Motivations:**  
+
+* Passionate about sustainability and reducing the company’s carbon footprint.  
+* Wants to improve employee morale and engagement through friendly competition.  
+* Interested in data to justify future investments in fuel-efficient vehicles.  
+
+**Usage Scenario:**  
+Sarah will review the leaderboard regularly to recognize top performers in fuel efficiency. She plans to hold monthly meetings to celebrate the achievements of the best drivers and encourage others to improve. She’ll also provide tips on eco-driving based on the data collected from the system.
+
+#### ➭ <ins>Commuter</ins>
+
+**Name:** David Kim  
+**Age:** 30  
+**Occupation:** Marketing Specialist  
+**Commute Distance:** 20 miles each way  
+**Commute Time:** 45 minutes during peak hours  
+**Goals:**  
+
+* Reduce fuel costs to save money for personal goals (e.g., travel).  
+* Show off fuel savings to colleagues and encourage them to join the competition.  
+* Find the most efficient routes to avoid traffic while saving fuel.  
+
+**Challenges:**  
+
+* Heavy traffic on the ring road can lead to unpredictable fuel consumption.  
+* Sometimes feels guilty about driving, given the environmental impact.  
+* Needs motivation to change driving habits, as current routes have become routine.  
+
+**Motivations:**  
+
+* Enjoys friendly competition and sharing achievements with peers.  
+* Keen interest in technology and how it can optimize his daily life.  
+* Aims to become a role model for eco-driving in his workplace.  
+
+**Usage Scenario:**  
+David will track his fuel consumption daily and compare it with his colleagues' stats on the leaderboard. He might adjust his driving style based on the feedback he receives and share tips on social media to inspire others.
+
+### Use Cases Analysis
+
+| **Use Case Number** | 00 |
+|---------------------|--------|
+| **Name** | View Personal Fuel Efficiency Data |
+| **Description** | The driver can view their real-time fuel efficiency data and see historical comparisons for eco-driving improvements. |
+| **Actor(s)** | Driver |
+| **Pre-Conditions** | * The commuter’s car is equipped with the OBD2 fuel efficiency monitoring system. <br> * The system is connected to the mobile app for data display. <br> * The user is logged into the app and has permissions to view their data. |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The system displays the real-time fuel efficiency for the current trip.<br> 3. The user navigates to “Trip History” to view past trips and fuel consumption stats.<br> 4. The user selects a previous trip to see detailed data such as MPG and time spent idling.<br> 5. The app shows comparative data for similar routes taken by other drivers. |
+| **Post-Conditions** | The user has viewed their real-time and historical fuel efficiency data, and can make adjustments to improve eco-driving if desired. |
+| **Exit Criteria** | The user closes the app or navigates away from the fuel efficiency display. |
+| **Notes & Issues** | * The app requires an internet connection to load comparative data. <br> * Data accuracy may vary depending on the OBD2 sensor. |
 
 
+01. **Create an Account**  
+   *Description:* Allows a new user to register with the app, providing basic information to set up an account for tracking and comparing fuel efficiency data.
 
-### 2) Use Cases Analysis
+02. **Login on the App**  
+   *Description:* Enables a registered user to securely log in to access their account and personalized data on fuel efficiency and eco-driving competition.
 
-| Use Case Number | Name | Description | Actor(s) | Pre-Conditions | Flow of Events | Post-Conditions | Exit Criteria | Notes & Issues |
-|---|---|---|---|---|---|---|---|---|
-| 1 |  | | | | | | |- |
+03. **Install the OBD2 Monitoring Device**  
+   *Description:* Guides the user through physically installing the OBD2 device in their vehicle to enable real-time fuel monitoring.
 
-### 3) Functional Analysis
+04. **Pair the Device**  
+   *Description:* Allows the user to connect their OBD2 device to the app, synchronizing vehicle data with the app for tracking and analysis.
 
-## D) Feature
+05. **Input Vehicle Information (fuel type and vehicle class)**  
+   *Description:* The user inputs relevant vehicle details such as fuel type and class to improve the accuracy of efficiency calculations and comparisons.
 
-### 1) Overview
+06. **Create Friend Group**  
+   *Description:* Enables a user to create a friend group where members can compare their fuel efficiency and compete on the leaderboard.
 
-## E) Non-Functional Requirements
+07. **Find Friend Group**  
+   *Description:* Allows a user to search for and view existing friend groups to potentially join.
 
-### 1) Costs
+08. **Join Friend Group**  
+   *Description:* Enables a user to join an existing friend group, giving them access to view and compete on that group’s leaderboard.
+
+09. **View Leaderboard Position in Friends Group**  
+   *Description:* Displays a user’s current ranking within their friend group based on fuel efficiency data.
+
+10. **View Leaderboard Position on Route**  
+    *Description:* Shows the user their position on a public leaderboard for a specific route, encouraging competition with others taking similar paths.
+
+11. **Leave a Friend Group**  
+    *Description:* Allows a user to leave a friend group they are a part of, removing them from that group’s leaderboard.
+
+12. **Delete a Friend Group**  
+    *Description:* Enables the creator of a friend group to delete it, which removes it from the app and eliminates any related leaderboard data.
+
+13. **Delete an Account**  
+    *Description:* Allows a user to permanently delete their account, erasing their personal data, vehicle data, and leaderboard history.
+
+14. **Log Out of the App**  
+    *Description:* Allows a logged-in user to securely log out of their account, ending their session on the app.
+
+
+### Functional Analysis
+
+## Feature
+
+### Overview
+
+## Non-Functional Requirements
+
+### Costs
 
 #### ➭ <ins>Capital Expenditures</ins>
 
@@ -180,7 +274,7 @@ A person commuting every day between his house in the suburbs and his office on 
   
 ##### <ins>Time Spent/Wages</ins>
 
-* ??? man-hours
+* 250 man-hours
 
 #### ➭ <ins>Operational Expenditures</ins>
 
@@ -190,28 +284,28 @@ A person commuting every day between his house in the suburbs and his office on 
 * Cost of upkeep for the server
 * Maintenance and service cost
 
-### 2) Reliability
+### Reliability
 
 * Not actually that important but should still be a concern
 
-### 3) Responsiveness/Performance
+### Responsiveness/Performance
 
-### 4) Operability
+### Operability
 
-* Should Run on all car with an OBDII port
-* Should support Android device
+* Should Run on all car with an OBDII port.
+* Should support Android device running 7.1 Nougat or newer. Most phone have at most 5 year support. As the last Android 7.1 phone was released in 2018, the number of phone running older version of android should be minimal.
   
-### 5) Recovery
+### Recovery
 
 * What happen when it broke (could I ask money to fix a purposefully shity system a la McDonald's ice cream machine?)
 
-### 6) Delivery
+### Delivery
 
 * As an application on android available through Play Store
 * An hardware that plug into the car
 
-### 7) Maintainability
+### Maintainability
 
 * Commented and Documented code
 
-### 8) Security
+### Security
