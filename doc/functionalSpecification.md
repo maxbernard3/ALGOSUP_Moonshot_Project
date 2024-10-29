@@ -9,6 +9,7 @@ Rewrite your code with user feedback
 
 Don't stop when you find competition
 keep track of time (gogo google spread sheet)
+Jira
 
 ## Table of content  
 
