@@ -203,45 +203,52 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 
 | **Use Case Number** | 00 |
 |---------------------|--------|
+| **Name** | Create an Account |
+| **Description** | Allows a new user to register with the app, providing basic information to set up an account for the application |
+| **Actor(s)** | End User |
+| **Pre-Conditions** | * The user has a Android smartphone with the application installed on it. <br> * The user either has a Google account or a valid Email. |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user chose to create an account when prompted.<br> 3. The user enter their information  (display name, email, password)  or login with Google.<br> 4.The user click on the confirmation email they have received |
+| **Post-Conditions** | * The user has created and verified an account and is automatically signed into the application.<br> * The user is redirected to the home screen. |
+| **Exit Criteria** | The user closes the app, returns to the login prompt, or does not validate the email within the required timeframe. |
+| **Notes & Issues** | * The app requires an internet connection to validate and create accounts. |
+
+01. **Login on the App**  
+   *Description:* Enables a registered user to securely log in to access their account and personalized data on fuel efficiency and eco-driving competition.
+
+02. **Install the OBD2 Monitoring Device**  
+   *Description:* Guides the user through physically installing the OBD2 device in their vehicle to enable real-time fuel monitoring.
+
+03. **Pair the Device**  
+   *Description:* Allows the user to connect their OBD2 device to the app, synchronizing vehicle data with the app for tracking and analysis.
+
+04. **Input Vehicle Information (fuel type and vehicle class)**  
+   *Description:* The user inputs relevant vehicle details such as fuel type and class to improve the accuracy of efficiency calculations and comparisons.
+
+05. **Create Friend Group**  
+   *Description:* Enables a user to create a friend group where members can compare their fuel efficiency and compete on the leaderboard.
+
+06. **Find Friend Group**  
+   *Description:* Allows a user to search for and view existing friend groups to potentially join.
+
+07. **Join Friend Group**  
+   *Description:* Enables a user to join an existing friend group, giving them access to view and compete on that group’s leaderboard.
+
+08. **View Leaderboard Position in Friends Group**  
+   *Description:* Displays a user’s current ranking within their friend group based on fuel efficiency data.
+
+09. **View Leaderboard Position on Route**  
+    *Description:* Shows the user their position on a public leaderboard for a specific route, encouraging competition with others taking similar paths.
+
+| **Use Case Number** | 10 |
+|---------------------|--------|
 | **Name** | View Personal Fuel Efficiency Data |
 | **Description** | The driver can view their real-time fuel efficiency data and see historical comparisons for eco-driving improvements. |
 | **Actor(s)** | Driver |
-| **Pre-Conditions** | * The commuter’s car is equipped with the OBD2 fuel efficiency monitoring system. <br> * The system is connected to the mobile app for data display. <br> * The user is logged into the app and has permissions to view their data. |
-| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The system displays the real-time fuel efficiency for the current trip.<br> 3. The user navigates to “Trip History” to view past trips and fuel consumption stats.<br> 4. The user selects a previous trip to see detailed data such as MPG and time spent idling.<br> 5. The app shows comparative data for similar routes taken by other drivers. |
-| **Post-Conditions** | The user has viewed their real-time and historical fuel efficiency data, and can make adjustments to improve eco-driving if desired. |
+| **Pre-Conditions** | * The commuter’s car is equipped with the OBD2 monitoring system. <br> * The system is connected to the mobile app for data display. <br> * The user is logged into the app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to “Trip History” to view past trips and fuel consumption stats.<br> 3. The user selects a previous trip to see detailed data such as MPG and time spent idling. |
+| **Post-Conditions** | The user has viewed their historical fuel efficiency data, and can make adjustments to improve eco-driving if desired. |
 | **Exit Criteria** | The user closes the app or navigates away from the fuel efficiency display. |
 | **Notes & Issues** | * The app requires an internet connection to load comparative data. <br> * Data accuracy may vary depending on the OBD2 sensor. |
-
-
-01. **Create an Account**  
-   *Description:* Allows a new user to register with the app, providing basic information to set up an account for tracking and comparing fuel efficiency data.
-
-02. **Login on the App**  
-   *Description:* Enables a registered user to securely log in to access their account and personalized data on fuel efficiency and eco-driving competition.
-
-03. **Install the OBD2 Monitoring Device**  
-   *Description:* Guides the user through physically installing the OBD2 device in their vehicle to enable real-time fuel monitoring.
-
-04. **Pair the Device**  
-   *Description:* Allows the user to connect their OBD2 device to the app, synchronizing vehicle data with the app for tracking and analysis.
-
-05. **Input Vehicle Information (fuel type and vehicle class)**  
-   *Description:* The user inputs relevant vehicle details such as fuel type and class to improve the accuracy of efficiency calculations and comparisons.
-
-06. **Create Friend Group**  
-   *Description:* Enables a user to create a friend group where members can compare their fuel efficiency and compete on the leaderboard.
-
-07. **Find Friend Group**  
-   *Description:* Allows a user to search for and view existing friend groups to potentially join.
-
-08. **Join Friend Group**  
-   *Description:* Enables a user to join an existing friend group, giving them access to view and compete on that group’s leaderboard.
-
-09. **View Leaderboard Position in Friends Group**  
-   *Description:* Displays a user’s current ranking within their friend group based on fuel efficiency data.
-
-10. **View Leaderboard Position on Route**  
-    *Description:* Shows the user their position on a public leaderboard for a specific route, encouraging competition with others taking similar paths.
 
 11. **Leave a Friend Group**  
     *Description:* Allows a user to leave a friend group they are a part of, removing them from that group’s leaderboard.
@@ -249,11 +256,11 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 12. **Delete a Friend Group**  
     *Description:* Enables the creator of a friend group to delete it, which removes it from the app and eliminates any related leaderboard data.
 
-13. **Delete an Account**  
-    *Description:* Allows a user to permanently delete their account, erasing their personal data, vehicle data, and leaderboard history.
-
-14. **Log Out of the App**  
+13. **Log Out of the App**  
     *Description:* Allows a logged-in user to securely log out of their account, ending their session on the app.
+
+14. **Delete an Account**  
+    *Description:* Allows a user to permanently delete their account, erasing their personal data, vehicle data, and leaderboard history.
 
 
 ### Functional Analysis
