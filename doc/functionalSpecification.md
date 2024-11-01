@@ -67,12 +67,12 @@ This force the app to be compliant with Apple App Store Guidelines which is a co
 Should be implemented as soon as possible but isn't necessary for a V1.
 <br>
 * <ins>Data collection for non OBD2 cars :</ins>
-All vehicle made after 1996 in north America and 2001 in europe feature an OBD2 or EOBD port. Our system work using the OBD ports on a car, if a car didn't have said port an other solution would have to be made to receive the information necessary.<br>
-North America and the EU would likely make the bulk of our user base. In those places, less than 10% of personal vehicle are older than the implementation of the mandatory OBD port laws. Beyond that, implementing a solution that works on older vehicle would be time consuming, expensive in material, require additional hardware, and may even require a specialist to instal the system on the vehicle.<br>
+All vehicle made after 1996 in north America and 2001 in europe feature an OBD2 or EOBD port. The system work using the OBD ports on a car, if a car didn't have said port an other solution would have to be made to receive the information necessary.<br>
+North America and the EU would likely make the bulk of the user base. In those places, less than 10% of personal vehicle are older than the implementation of the mandatory OBD port laws. Beyond that, implementing a solution that works on older vehicle would be time consuming, expensive in material, require additional hardware, and may even require a specialist to instal the system on the vehicle.<br>
 Such a system should not be implemented or worked on as it makes no economic sense.
 <br>
 * <ins>Website :</ins>
-Having a website would make it platform agnostic as every computer or phone capable of running a web browser could have access to our Software.<br>
+Having a website would make it platform agnostic as every computer or phone capable of running a web browser could have access to the Software.<br>
 There are some drawbacks. The speed and responsiveness of website is significantly worse than that of a dedicated application. And there are limits to the data available to a website, especially in iOS which does not support Web Bluetooth API. The website could be used to display information without it being functional.<br>
 The website is only marginally useful and shouldn't be implemented for now.
 <br>
@@ -164,12 +164,12 @@ There is an estimated 280 man-hours total to complete this project
 
 **Motivations:**  
 
-* Passionate about sustainability and reducing the company’s carbon footprint.  
+* Passionate about sustainability and reducing the company's carbon footprint.  
 * Wants to improve employee morale and engagement through friendly competition.  
 * Interested in data to justify future investments in fuel-efficient vehicles.  
 
 **Usage Scenario:**  
-Sarah will review the leaderboard regularly to recognize top performers in fuel efficiency. She plans to hold monthly meetings to celebrate the achievements of the best drivers and encourage others to improve. She’ll also provide tips on eco-driving based on the data collected from the system.
+Sarah will review the leaderboard regularly to recognize top performers in fuel efficiency. She plans to hold monthly meetings to celebrate the achievements of the best drivers and encourage others to improve. She'll also provide tips on eco-driving based on the data collected from the system.
 
 #### ➭ <ins>Commuter</ins>
 
@@ -212,55 +212,148 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 | **Exit Criteria** | The user closes the app, returns to the login prompt, or does not validate the email within the required timeframe. |
 | **Notes & Issues** | * The app requires an internet connection to validate and create accounts. |
 
-01. **Login on the App**  
-   *Description:* Enables a registered user to securely log in to access their account and personalized data on fuel efficiency and eco-driving competition.
+| **Use Case Number** | 01 |
+|---------------------|--------|
+| **Name** | Login on the App |
+| **Description** | Enables a registered user to securely log in to access their account and personalized data on fuel efficiency and eco-driving competition. |
+| **Actor(s)** | End User |
+| **Pre-Conditions** | * The user has a Android smartphone with the application installed on it. <br>* The user has created an account on the mobile app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user chose to login to an existing account when prompted.<br> 3. The user enter their information  (email, password)  or login with Google. |
+| **Post-Conditions** | * The user is redirected to the home screen. |
+| **Exit Criteria** | The user closes the app, returns to the login prompt, inputs invalid login information. |
+| **Notes & Issues** | * The app requires an internet connection to validate the information |
 
-02. **Install the OBD2 Monitoring Device**  
-   *Description:* Guides the user through physically installing the OBD2 device in their vehicle to enable real-time fuel monitoring.
+| **Use Case Number** | 02 |
+|---------------------|--------|
+| **Name** | Install the OBD2 Monitoring Device |
+| **Description** | The user is physically installing the OBD2 device in their vehicle to enable real-time fuel monitoring. |
+| **Actor(s)** | Driver |
+| **Pre-Conditions** | * The user has a vehicle with an OBD2 port<br> * The user has the fuel flow monitoring hardware part of the system |
+| **Flow of Events** | 1. The user find the OBD2 port in their cars (in the vehicle's users manual)<br> 2. The user plug the OBD2 device in the port with the vehicle turned off<br> 3. the User turn on the vehicle on (but not the engine) to check that the installation worked |
+| **Post-Conditions** | A LED on the OBD2 Device indicate that the device was installed as intended |
+| **Exit Criteria** | The user cannot instal the device or the indicator led doesn't show as expected |
+| **Notes & Issues** | * The user may struggle to find the OBD2 port<br>* Some cars may not turn one without also turning on the engine |
 
-03. **Pair the Device**  
-   *Description:* Allows the user to connect their OBD2 device to the app, synchronizing vehicle data with the app for tracking and analysis.
+| **Use Case Number** | 03 |
+|---------------------|--------|
+| **Name** | Pair the Device |
+| **Description** |Allows the user to connect their OBD2 device to the app, synchronizing vehicle data with the app. |
+| **Actor(s)** | Driver |
+| **Pre-Conditions** | * The commuter's car is equipped with the OBD2 monitoring system. <br> * The user is logged into the app. <br> * The user's phone Bluetooth is on and the app has permission to use it|
+| **Flow of Events** | 1. The user press the button on the OBD2 device until the LED start blinking faster<br> 2. The user opens the mobile app.<br> 3. The user navigates to "Pairing" where the phone will look to connect with the device.<br>4. The user has to allow the pairing between the app and the device when prompted. <br>5. The application will show a successful pairing message and the device led will stay on without blinking.|
+| **Post-Conditions** | The device was paired successfully and will now find the user's phone on it's own in the future |
+| **Exit Criteria** | The application cannot find the device or the user cancel the pairing by either refusing it or exiting the app. |
+| **Notes & Issues** | The process of pairing can not be made entirely automatically for security reason. |
 
-04. **Input Vehicle Information (fuel type and vehicle class)**  
-   *Description:* The user inputs relevant vehicle details such as fuel type and class to improve the accuracy of efficiency calculations and comparisons.
+| **Use Case Number** | 04 |
+|---------------------|--------|
+| **Name** | Input Vehicle Information (fuel type and vehicle class) |
+| **Description** | The user inputs relevant vehicle details such as fuel type and class to improve the accuracy of efficiency calculations and comparisons. |
+| **Actor(s)** | Driver |
+| **Pre-Conditions** | * The user is logged into the app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Vehicle Information" to input their vehicle class (SUV, Coupe, Sedan...) and fuel (Diesel, Petrol, Hybrid-Diesel...)<br> 3. The user confirm his impute |
+| **Post-Conditions** | The user has given their vehicle data and can now get better tracking. They are redirected to the home screen |
+| **Exit Criteria** | The user closes the app or navigates away from the Vehicle Information page. |
+| **Notes & Issues** | * The app requires an internet connection to upload new information <br> * This work on trust and a user could input anything |
 
-05. **Create Friend Group**  
-   *Description:* Enables a user to create a friend group where members can compare their fuel efficiency and compete on the leaderboard.
+| **Use Case Number** | 05 |
+|---------------------|--------|
+| **Name** | Create Friend Group |
+| **Description** | Enables a user to create a friend group where members can compare their fuel efficiency and compete on the leaderboard. |
+| **Actor(s)** | End user |
+| **Pre-Conditions** | * The user is logged into the app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Friend Group" where they can see all the group they are part off<br> 3. The user press the button to create a new group.<br> 4. The user is prompted to give a "Group Name" and (optionally) to select the person they want to invite to a new group among their existing friends.<br> 6. The group is created and it's member can share the invitation to this group by pressing the share icon.
+| **Post-Conditions** | The user is on the "group screen" and can see the leaderboard of the group |
+| **Exit Criteria** | The user closes the app or navigates away from the group creation page. |
+| **Notes & Issues** | * The app requires an internet connection to upload new information |
 
-06. **Find Friend Group**  
-   *Description:* Allows a user to search for and view existing friend groups to potentially join.
+| **Use Case Number** | 06 |
+|---------------------|--------|
+| **Name** | Join Friend Group |
+| **Description** | Enables a user to join an existing friend group, giving them access to view and compete on that group's leaderboard |
+| **Actor(s)** | End user |
+| **Pre-Conditions** | * The user is logged into the app <br> * The user has an invitation to a friend group (sent by someone already in the group) |
+| **Flow of Events** | 1. The user click on the invitation link and if prompted, select to open the link with the app<br> 2. The user is redirected to the application and is asked if they want to join the group <br> 3. Upon accepting the user is redirected to the group page and is now part of that group and it's leaderboard |
+| **Post-Conditions** | The user is on the "group screen" and can see the leaderboard of the group |
+| **Exit Criteria** | The user closes the app or does not accept to join the group when prompted. |
+| **Notes & Issues** | * The app requires an internet connection to load comparative data.<br> * A group could be deleted between it's creation and the user accepting the invitation |
 
-07. **Join Friend Group**  
-   *Description:* Enables a user to join an existing friend group, giving them access to view and compete on that group’s leaderboard.
+| **Use Case Number** | 07 |
+|---------------------|--------|
+| **Name** | View Leaderboard Position in Friends Group |
+| **Description** | Displays a user's current ranking within their friend group based on fuel efficiency data.|
+| **Actor(s)** | End user |
+| **Pre-Conditions** | * The user is logged into the app <br> * The user is part of a friend group |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Friend Groups" to view all the group he is part off.<br> 3. The user selects a group to see the leaderboard and all the members within. <br> 4. the user type a name in the search bar and the leaderboard scroll to that name to show their information and rank<br> 5. Alternatively the user can scroll on the leaderboard to see different people and their ranking.|
+| **Post-Conditions** | The user is on the "friend group" screen and can see the position of anyone in the leaderboard |
+| **Exit Criteria** | The user closes the app or navigates out of the Group's page|
+| **Notes & Issues** | * The app requires an internet connection to load comparative data. |
 
-08. **View Leaderboard Position in Friends Group**  
-   *Description:* Displays a user’s current ranking within their friend group based on fuel efficiency data.
+| **Use Case Number** | 08 |
+|---------------------|--------|
+| **Name** | View Leaderboard Position on Route |
+| **Description** | Shows the user their position on a public leaderboard for a specific route, encouraging competition with others taking similar paths. |
+| **Actor(s)** | Driver |
+| **Pre-Conditions** | * The user is logged into the app <br> * The user has driven at least one route |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Route Leaderboard" to view all the route he is part off.<br> 3. The user selects a route to see the leaderboard, only their friend will have their name visible. <br> 4. the user type a name in the search bar and the leaderboard scroll to that name to show their information and rank <br> 5. Alternatively the user can scroll on the leaderboard to see different people and their ranking. |
+| **Post-Conditions** | The user is on the "route group" screen and can see the position of anyone in the leaderboard |
+| **Exit Criteria** | The user closes the app or navigates out of the Group's screen|
+| **Notes & Issues** | * The app requires an internet connection to load comparative data. |
 
-09. **View Leaderboard Position on Route**  
-    *Description:* Shows the user their position on a public leaderboard for a specific route, encouraging competition with others taking similar paths.
-
-| **Use Case Number** | 10 |
+| **Use Case Number** | 09 |
 |---------------------|--------|
 | **Name** | View Personal Fuel Efficiency Data |
 | **Description** | The driver can view their real-time fuel efficiency data and see historical comparisons for eco-driving improvements. |
 | **Actor(s)** | Driver |
-| **Pre-Conditions** | * The commuter’s car is equipped with the OBD2 monitoring system. <br> * The system is connected to the mobile app for data display. <br> * The user is logged into the app |
-| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to “Trip History” to view past trips and fuel consumption stats.<br> 3. The user selects a previous trip to see detailed data such as MPG and time spent idling. |
+| **Pre-Conditions** | * The user's car is equipped with the OBD2 monitoring system. <br> * The OBD2 device is connected to the mobile app. <br> * The user is logged into the app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Trip History" to view past trips and fuel consumption stats.<br> 3. The user selects a previous trip to see detailed data such as MPG and time spent idling. |
 | **Post-Conditions** | The user has viewed their historical fuel efficiency data, and can make adjustments to improve eco-driving if desired. |
 | **Exit Criteria** | The user closes the app or navigates away from the fuel efficiency display. |
 | **Notes & Issues** | * The app requires an internet connection to load comparative data. <br> * Data accuracy may vary depending on the OBD2 sensor. |
 
-11. **Leave a Friend Group**  
-    *Description:* Allows a user to leave a friend group they are a part of, removing them from that group’s leaderboard.
+| **Use Case Number** | 10 |
+|---------------------|--------|
+| **Name** | Leave a Friend Group |
+| **Description** | Allows a user to leave a friend group they are a part of, removing them from that group's leaderboard. |
+| **Actor(s)** | End user |
+| **Pre-Conditions** | * The user is logged into the app <br> * The user is part of a friend group |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Friend Groups" to view all the group he is part off.<br> 3. The user selects a group to see the leaderboard and all the members within. <br>4. The user select to leave the group by selecting the "Quit Group" option in the hamburger menu.<br> 5. The user is asked to confirm wether or not they want to leave.
+| **Post-Conditions** | The user is on the home page and has left the friend group. They can no longer see that group nor can they be seen by the members of the group |
+| **Exit Criteria** | The user closes the app or cancel the action when asked to confirm to leave the group. |
+| **Notes & Issues** | * The app requires an internet connection to load comparative data. |
 
-12. **Delete a Friend Group**  
-    *Description:* Enables the creator of a friend group to delete it, which removes it from the app and eliminates any related leaderboard data.
+| **Use Case Number** | 11 |
+|---------------------|--------|
+| **Name** | Delete a Friend Group |
+| **Description** | Enables the creator of a friend group to delete it, which removes it from the app and eliminates any related leaderboard data. |
+| **Actor(s)** | Creator of a group |
+| **Pre-Conditions** | * The user is logged into the app <br> * The has created a friend group |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user navigates to "Friend Groups" to view all the group he is part off.<br> 3. The user selects a group they created to see the leaderboard and all the members within. <br>4. The user select to delete the group by selecting the "Delete Group" option in the hamburger menu.<br> 5. The user is asked to confirm wether or not they want to delete.
+| **Post-Conditions** | The user is on the home page and the group no longer exist and can't be seen by any of it's member anymore. |
+| **Exit Criteria** | The user closes the app or cancel the action when asked to confirm to delete the group. |
+| **Notes & Issues** | * The app requires an internet connection to load comparative data. |
 
-13. **Log Out of the App**  
-    *Description:* Allows a logged-in user to securely log out of their account, ending their session on the app.
+| **Use Case Number** | 12 |
+|---------------------|--------|
+| **Name** | Log Out of the App |
+| **Description** | Allows a logged-in user to log out of their account, ending their session on the app. |
+| **Actor(s)** | End user |
+| **Pre-Conditions** | * The user is logged into the app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user click on the hamburger menu<br> 3. The user selects to Logout<br> 5. The user is asked to confirm wether or not they want to log out.
+| **Post-Conditions** | The user is on the splash screen and logged out of the application |
+| **Exit Criteria** | The user closes the app or cancel the action when asked to confirm to log out |
+| **Notes & Issues** |  * The app requires an internet connection to upload new information |
 
-14. **Delete an Account**  
-    *Description:* Allows a user to permanently delete their account, erasing their personal data, vehicle data, and leaderboard history.
+| **Use Case Number** | 13 |
+|---------------------|--------|
+| **Name** | Delete an Account |
+| **Description** | Allows a user to permanently delete their account, erasing their personal data, vehicle data, and leaderboard history. |
+| **Actor(s)** | End user |
+| **Pre-Conditions** | * The user is logged into the app |
+| **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user click on the hamburger menu<br> 3. The user selects to Delete the account<br> 5. The user is asked to confirm wether or not they want to Delete the account.
+| **Post-Conditions** | The user is on the splash screen and the account and all it's associated data have been deleted. |
+| **Exit Criteria** | The user closes the app or cancel the action when asked to confirm to delete the account |
+| **Notes & Issues** |  * The app requires an internet connection to upload new information |
 
 
 ### Functional Analysis
@@ -285,15 +378,15 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 
 #### ➭ <ins>Operational Expenditures</ins>
 
-##### <ins>Energies</ins>
-
-* Cost of electricity for the hardware
+* Cost of electricity for the device
 * Cost of upkeep for the server
 * Maintenance and service cost
+* Cost of RMA
 
 ### Reliability
 
-* Not actually that important but should still be a concern
+* The device should be designed in a way to return to it's default working state after a issue to limit RMA
+* Software should have test to ensure reliable operation
 
 ### Responsiveness/Performance
 
@@ -304,15 +397,28 @@ David will track his fuel consumption daily and compare it with his colleagues' 
   
 ### Recovery
 
-* What happen when it broke (could I ask money to fix a purposefully shity system a la McDonald's ice cream machine?)
+#### ➭ <ins>Hardware failure</ins>
+
+- The application should detect and inform the user of an issue with the hardware. 
+- Any data collected as long as the failure isn't resolved should be discarded.
+- The device's LED should flash RED with an error code if applicable
+- If a restart of the device did not solve the issue it should be sent for RMA
+
+#### ➭ <ins>Software failure</ins>
+
+- The application try to restart itself
+- All data collected during the trip in progress is discarded
 
 ### Delivery
 
-* As an application on android available through Play Store
-* An hardware that plug into the car
+* As an application on Android 7.1 and newer available through Play Store.
+* A encased Device that plug into the car OBD2 port.
 
 ### Maintainability
 
 * Commented and Documented code
 
 ### Security
+
+* 2FA
+* Warning to the user when someone else pair their device with a new account
