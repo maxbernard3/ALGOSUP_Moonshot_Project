@@ -93,9 +93,9 @@ The effort necessary to implement the feature are too great, but it would become
 | Name | Type | Deadline | Link |
 |---|---|---|---|
 | Functional Specifications Document | Document (markdown) | 22/12/2024 | |
-| Technical Specifications Document | Document (markdown) | 22/12/2024 | |
-| POC | prototype hardware and server side code on Github | 22/12/2024 | |
-| MVP | Application, finished hardware, scalable backend | |
+| Technical Specifications Document | Document (markdown) | 01/02/2025 | |
+| POC | prototype hardware and server side code on Github | 03/03/2025 | |
+| MVP | Application, finished hardware, scalable backend | 30/05/2025 |
 
 ### Project Plan
 
@@ -103,13 +103,13 @@ The effort necessary to implement the feature are too great, but it would become
 
 | Milestone | Deadline|
 |---|---|
-| Functional Specifications V1 |  |
-| Technical Specifications V1 |  |
-| Proof Of Concept |  |
-| Oral Presentation (1st Jury) |  |
-| Market study | |
-| Minimum Viable Product |  |
-| Oral Presentation (2nd Jury) |  |
+| Functional Specifications V1 | 22/12/2024 |
+| Technical Specifications V1 | 01/02/2025 |
+| Proof Of Concept | 03/03/2025 |
+| Oral Presentation (1st Jury) | 16/06/2025 |
+| Market study |06/04/2025 |
+| Minimum Viable Product | 30/05/2025 |
+| Oral Presentation (2nd Jury) | 12/09/2025 |
 
 #### ➭ <ins>Dependencies</ins>
 
@@ -124,19 +124,28 @@ The rest of the project depends on the first version of the functional specifica
 There is an estimated 280 man-hours total to complete this project
 => 1 person
 
-=> 300€ available to purchase hardware and software
+=> 300€ available to purchase hardware and software :
+    - Electronic support for the hardware
+    - OBD2 scanner
+    - Server renting
+    - Deployment on Appstore
 
 => 2 cars for testing
+    - Peugeot 405 (No OBD port)
+    - Dacia Duster
 
 #### ➭ <ins>Assumptions/Constraints</ins>
 
-| Assumptions |
-|---|
-| |
+| Assumptions | |
+|---| --- |
+| Vehicle Compatibility |  The project assumes that the vast majority of users will have vehicles equipped with OBD2 or EOBD ports (post-1996 in North America, post-2001 in Europe). This means the majority of cars will be able to participate without additional hardware |
+| User Adoption | Assumes that there is a sufficient user base interested in the eco-driving leaderboard, with enough competition to create value. |
+| Minimal Regulation | Assumes that no major legal or regulatory hurdles will arise around the collection and use of vehicle data, particularly regarding user privacy and data protection. |
 
-| Constraints |
-|---|
-| |
+| Constraints | |
+|---| --- |
+| Limited Testing Vehicles | The project has access to only two cars for testing. This limits the diversity of vehicle models for testing the system and gathering data across different types of vehicles. |
+| Budget Limitation | The project is constrained by a 300€ budget, which limits the scope of hardware and software purchases (e.g., OBD2 scanners, server rental). This budget may need to be optimized to balance between hardware, software, and operational costs. |
 
 <!-- Functional Requirements -->
 
@@ -210,7 +219,8 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 | **Flow of Events** | 1. The user opens the mobile app.<br> 2. The user chose to create an account when prompted.<br> 3. The user enter their information  (display name, email, password)  or login with Google.<br> 4.The user click on the confirmation email they have received |
 | **Post-Conditions** | * The user has created and verified an account and is automatically signed into the application.<br> * The user is redirected to the home screen. |
 | **Exit Criteria** | The user closes the app, returns to the login prompt, or does not validate the email within the required timeframe. |
-| **Notes & Issues** | * The app requires an internet connection to validate and create accounts. |
+| **Notes & Issues**
+ | * The app requires an internet connection to validate and create accounts. |
 
 | **Use Case Number** | 01 |
 |---------------------|--------|
@@ -366,59 +376,79 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 
 ### Costs
 
-#### ➭ <ins>Capital Expenditures</ins>
-
 ##### <ins>Material</ins>
+
+- hardware : Cost of the OBD2 scanner, sensors, cables, and the device that plugs into the car's OBD2 port. Additional materials for building prototypes, testing equipment, and device encasing.
+
   
 ##### <ins>Software</ins>
-  
-##### <ins>Time Spent/Wages</ins>
 
-* 250 man-hours
+- Development Tools: Software licenses for development tools, IDEs, and testing environments (e.g., Android Studio, any paid libraries).
+- Server and Hosting: Hosting costs for the backend - - infrastructure (e.g., cloud servers, database hosting).
+- App Store Fees: Costs for publishing on the Google Play Store (e.g., annual developer registration fees).
+  
+##### <ins>Time Spent</ins>
+
+* 280 man-hours: Total time estimate for development and testing (including hardware and software tasks).
 
 #### ➭ <ins>Operational Expenditures</ins>
 
-* Cost of electricity for the device
-* Cost of upkeep for the server
-* Maintenance and service cost
-* Cost of RMA
+* Cost of electricity for the device: Estimate for how much power the device will consume when connected to the car’s OBD2 port and running. This is usually a low amount but should be tracked for long-term sustainability.
+* Cost of upkeep for the server: Ongoing costs for server usage to handle data from all users (this includes cloud service subscriptions or dedicated hosting for the backend).
+* Maintenance and service cost: Any cost associated with maintaining the hardware, including the replacement of defective components.
+* Cost of RMA: Return merchandise authorization costs for hardware that has failed. This can include shipping, processing, and replacements.
 
 ### Reliability
 
-* The device should be designed in a way to return to it's default working state after a issue to limit RMA
-* Software should have test to ensure reliable operation
+- Device Reliability:
+    - The device should have a self-checking mechanism to ensure it's functioning correctly and will attempt to restart if an issue is detected.
+    - The hardware should be designed to last under various car environmental conditions (e.g., temperature fluctuations, vibration).
+    - Ideally, the device should have a modular design to allow for easy replacement of parts in case of failure.
+- Software Reliability:
+    - There should be robust error-handling routines in place to recover from unexpected crashes or issues without affecting the user experience.
+    - Regular updates and patches should be part of the software lifecycle to ensure long-term reliability.
+    - Automated tests should be set up for key parts of the software (e.g., data collection, leaderboard calculations) to ensure they are functioning correctly.
 
 ### Responsiveness/Performance
 
+- **App Performance:** The application should load quickly (within 5 seconds), process data in real time, and update the user interface smoothly.
+- **Data Sync:** When the device collects data, it should sync with the server efficiently, and any delays should be communicated clearly to the user (e.g., "Data syncing...").
+- **Efficiency:** The app should not drain the phone's battery excessively during operation. Power consumption should be optimized, especially during long trips.
+
 ### Operability
 
-* Should Run on all car with an OBDII port.
-* Should support Android device running 7.1 Nougat or newer. Most phone have at most 5 year support. As the last Android 7.1 phone was released in 2018, the number of phone running older version of android should be minimal.
+- **Compatibility:** The software should support Android 7.1 and newer devices, ensuring that it can run on a wide range of phones, especially considering that most devices will be relatively recent. Older versions should be excluded, and support for newer Android versions should be evaluated in future updates.
+- **Ease of Use:** The user interface (UI) should be intuitive and easy to navigate. A first-time user should be able to understand how to use the app in less than 5 minutes.
+- **Car Compatibility:** The device should be designed to plug and work with any vehicle equipped with an OBD2 port. This includes ensuring compatibility with various car makes and models and providing clear troubleshooting guides for common issues.
   
 ### Recovery
 
 #### ➭ <ins>Hardware failure</ins>
 
-- The application should detect and inform the user of an issue with the hardware. 
-- Any data collected as long as the failure isn't resolved should be discarded.
-- The device's LED should flash RED with an error code if applicable
-- If a restart of the device did not solve the issue it should be sent for RMA
+- **Failure Detection:** The device should continuously monitor its health (e.g., power supply, communication with the OBD2 port). If an issue is detected, it should immediately notify the user.
+- **Data Integrity:** Any data collected during a session should be discarded if a hardware issue occurs, as retaining inaccurate data would compromise the results.
+- **LED Error Codes:** The device's LED indicator should flash red with specific error codes to help the user understand the nature of the problem. For example, a flashing pattern might indicate a communication failure with the OBD2 port.
+- **RMA Process:** If the device cannot recover from an error or reboot successfully, the user should be guided to send the device for a replacement through a simple RMA process. The manufacturer should offer easy-to-follow return instructions.
 
 #### ➭ <ins>Software failure</ins>
 
-- The application try to restart itself
-- All data collected during the trip in progress is discarded
+- **Application Recovery:** If the app crashes, it should attempt to restart automatically. If the crash happens during an active session, any data from that session should be discarded to avoid corrupted information.
+- **Error Reporting:** The app should prompt the user with an error message explaining the failure and give them the option to report the issue (e.g., send logs to the support team).
 
 ### Delivery
 
-* As an application on Android 7.1 and newer available through Play Store.
-* A encased Device that plug into the car OBD2 port.
+- **Android App Delivery:** The app should be made available for download on the Google Play Store for devices running Android 7.1 Nougat or newer. The app should also comply with Play Store policies (e.g., user privacy, data handling).
+- **Hardware Delivery:** The hardware should be sold in a robust, easy-to-package form that’s ready for shipping or in-car installation. It should be user-friendly with clear instructions for use and installation.
 
 ### Maintainability
 
-* Commented and Documented code
+- **Code Quality:** The codebase should be well-structured, with comprehensive comments and documentation for each module or function. This is critical for future updates, debugging, or handing over the project to new developers.
+- **Modularity:** The software should be modular to allow for easy future updates (e.g., adding new vehicle compatibility, integrating additional features like custom routes or improved scoring systems).
+- **Documentation:** Detailed documentation should be maintained for both the hardware and software components. This includes setup guides, user manuals, troubleshooting steps, and API documentation.
 
 ### Security
 
-* 2FA
-* Warning to the user when someone else pair their device with a new account
+- **User Authentication:** Implement two-factor authentication (2FA) for users to access their profiles securely. This could be through SMS or an authenticator app.
+- **Device Pairing Security:** When a new device is paired with an account, the app should send an alert to the user’s phone/email to confirm that they initiated the connection. This can help prevent unauthorized access.
+- **Data Encryption:** All sensitive user data, including driving statistics and personal information, should be encrypted during transmission (e.g., SSL/TLS) and at rest (e.g., database encryption).
+- **Data Privacy:** Ensure compliance with GDPR and other relevant data privacy regulations, especially considering the app will be collecting data related to driving behavior and vehicle performance.
