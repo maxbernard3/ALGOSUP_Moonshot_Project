@@ -372,6 +372,158 @@ David will track his fuel consumption daily and compare it with his colleagues' 
 
 ### Overview
 
+#### ➭ <ins>Fuel Efficiency Monitoring</ins>
+
+- **Data Capture**  
+  - Captures vehicle data through the OBD2 device, recording metrics such as fuel consumption, mileage, idling time, RPM, and other essential parameters directly from the vehicle.  
+  - Logs all collected data for post-trip analysis without providing live feedback during the drive.
+
+- **Data Presentation**  
+  - Displays trip summaries with specific statistics: total fuel consumed, average miles per gallon (MPG), distance traveled, time spent idling, and time spent driving actively (cruising, accelerating).  
+  - Enables users to compare historical trip data, identifying trends and patterns in fuel efficiency over days, weeks, and months.
+
+- **Personalization**  
+  - Allows users to input vehicle-specific parameters, specifying the fuel type (petrol, diesel, hybrid-diesel) and vehicle classification (SUV, sedan, coupe, hatchback, van) for accurate calculation and tailored feedback.  
+  - Segments data into urban and highway driving to provide precise insights into fuel usage in different contexts.
+
+#### ➭ <ins>Leaderboard</ins>
+
+- **Scope of Leaderboards**  
+  - Global leaderboard ranks users based on MPG or eco-driving scores for specific routes shared among multiple participants.  
+  - Private leaderboards for friend groups allow users to engage in competition within their networks.
+
+- **Visibility and Access**  
+  - Provides a detailed ranking system showing the user's position, total participants, and relative performance compared to others.  
+  - Displays the names of friends on global leaderboards while anonymizing other users for privacy.
+
+- **Granularity**  
+  - Organizes rankings by metrics such as fuel efficiency, carbon dioxide emissions reduction, and total cost savings.  
+  - Allows users to filter leaderboard data by time periods: daily, weekly, or monthly.
+
+- **Social Integration**  
+  - Enables users to share leaderboard rankings, milestones, and achievements directly within friend groups or on external platforms.  
+  - Supports the creation and management of multiple friend groups, each with its own leaderboard for diverse competitive opportunities.
+
+#### ➭ <ins>Eco-Driving Insights</ins>
+
+- **Feedback and Reports**  
+  - Provides post-trip analysis identifying specific driving behaviors: harsh braking, rapid acceleration, extended idling, and suboptimal RPM management.  
+  - Offers targeted recommendations for improving eco-driving based on the behaviors highlighted in the analysis.
+
+- **Metrics and Scoring**  
+  - Presents detailed eco-driving metrics, measuring driving smoothness, RPM consistency, and energy efficiency.  
+  - Assigns an eco-driving score for each trip, enabling users to benchmark and track performance improvements over time.
+
+- **Educational Content**  
+  - Delivers structured knowledge on eco-driving practices, specifying techniques like maintaining steady speeds, minimizing idle times, and optimizing route selection.  
+  - Explains the measurable impact of eco-driving habits on reducing fuel consumption and environmental impact, with a focus on tangible outcomes.
+
+- **Long-Term Benefits**  
+  - Tracks performance trends over time, reinforcing positive behaviors with visual indicators of progress.  
+  - Links fuel savings to direct financial benefits and environmental impact reduction to motivate sustained eco-driving practices.
+
+### Fuel Efficiency Monitoring
+
+#### ➭ <ins>Data Capture</ins>
+
+The system collects vehicle data using the On-Board Diagnostics II (OBD2) interface and GPS, focusing on metrics necessary for evaluating fuel efficiency and driving behavior.
+
+- **OBD2 Data**:
+  - **Fuel Consumption**: Captures real-time fuel usage data, including cumulative fuel consumed during the trip.
+  - **Vehicle Speed**: Provides real-time speed readings.
+  - **Engine RPM**: Monitors engine revolutions per minute to assess engine performance and load.
+  - **Throttle Position**: Records throttle input to analyze driving style.
+  - **Idle Time**: Tracks engine runtime when the vehicle is stationary.
+  - **Diagnostic Trouble Codes (DTCs)**: Identifies engine or system issues that might impact fuel efficiency.
+
+- **GPS Data**:
+  - **Distance Traveled**: Calculates trip distance based on GPS coordinates.
+  - **Route Information**: Logs the path taken, distinguishing between urban and highway driving conditions.
+  - **Speed Profiles**: Maps speed data against geolocation for route-specific analysis.
+
+- **Data Logging**:
+  - Metrics are recorded continuously throughout the trip at regular intervals for balanced detail and storage efficiency.
+  - Trip data is stored locally on the user’s device until it is uploaded to a central server for analysis.
+
+- **Constraints**:
+  - Data collection is limited to parameters accessible via the OBD2 interface and GPS. Additional hardware integrations, such as fuel flow sensors, are not included.
+  - Real-time feedback is excluded; the focus is on post-trip analysis to simplify processing and enhance usability.
+  - All collected data is anonymized and encrypted for privacy and security during storage and transmission.
+
+#### ➭ <ins>Data Presentation</ins>
+
+The system provides users with detailed and clear insights into their fuel efficiency and driving behavior. All trip data is visualized directly within the application in a structured and interactive format designed for straightforward interpretation and analysis.
+
+- **Metrics Displayed**:
+  - **Total Fuel Consumed**: The volume of fuel used during the trip.
+  - **Fuel Efficiency**:
+    - Expressed in multiple units to meet regional standards:
+      - Miles per gallon (MPG, US and UK).
+      - Kilometers per liter (km/L).
+      - Liters per 100 kilometers (L/100 km).
+  - **Distance Traveled**: The total distance covered during the trip.
+  - **Driving Time**:
+    - Time spent idling (engine running while the vehicle is stationary).
+    - Time spent actively driving, divided into cruising and accelerating.
+  - **Cruising Analysis**:
+    - Defined as maintaining a deviation of less than 5 km/h over a period of 60 seconds.
+    - Displays total cruising time and the percentage of the trip spent cruising.
+
+- **Data Visualization on the Application**:
+  - **Graphs and Charts**:
+    - **Fuel Efficiency Over Time**: A line graph displays fuel efficiency in MPG, km/L, and L/100 km at intervals along the trip.
+    - **Time Allocation**:
+      - A pie chart divides total trip time into idling, cruising, and accelerating phases.
+    - **Historical Trends**:
+      - Bar charts and line graphs show changes in fuel efficiency over daily, weekly, and monthly periods.
+    - **Comparative Analysis**:
+      - Overlayed graphs present fuel efficiency and speed to correlate driving behavior with efficiency outcomes.
+  - **Highlights and Summaries**:
+    - A dashboard within the application displays key metrics, including average fuel efficiency, total fuel consumed, and driving time distribution.
+    - Performance indicators use a fixed color scheme to categorize results into efficiency tiers.
+  - **Route-Specific Insights**:
+    - A map overlay in the application displays fuel efficiency data along the route.
+    - Segments of the route are color-coded to represent efficiency levels based on fuel consumption rates.
+
+- **Historical Data Comparison**:
+  - Users view aggregated statistics over specific timeframes, including daily, weekly, and monthly averages, within the application.
+  - Trends and patterns in fuel efficiency are displayed chronologically to monitor changes over time.
+  - Similar routes or conditions are compared directly within the application to evaluate performance differences.
+
+- **User Accessibility**:
+  - All metrics are displayed with standardized labels and fixed unit conversions to ensure clarity and uniformity.
+  - Visualizations are interactive within the application, with zoom and focus options to highlight specific sections of a trip or detailed timeframes in historical data.
+
+#### ➭ <ins>Personalization</ins>
+
+The system enables users to input vehicle-specific details and segment driving data into urban and highway categories for tailored insights into fuel efficiency. By default, data is presented as a combined overview, with the option to view segmented details if desired.
+
+- **Vehicle Information Input**:
+  - Users can provide their vehicle details through a guided interface in the application, ensuring accurate data processing and personalized feedback.
+  - **Parameters Collected**:
+    - **Fuel Type**: Petrol, diesel, hybrid-petrol, hybrid-diesel.
+    - **Vehicle Classification**: SUV, sedan, coupe, hatchback, van.
+  - **User Interface**:
+    - A dedicated section within the app labeled “Vehicle Information” guides users through the process of entering these details.
+    - Dropdown menus or selection tiles are provided for fuel type and vehicle classification.
+    - A confirmation screen displays the selected inputs for verification before saving.
+
+- **Urban and Highway Segmentation**:
+  - The system segments trip data into urban and highway categories for context-specific insights into fuel consumption patterns.
+  - **Segmentation Criteria**:
+    - Urban zones are identified using GPS-based geofencing, where specific zones are labeled as urban.
+    - Any area not labeled as urban is categorized as highway driving.
+  - **Data Presentation**:
+    - By default, all trip data is displayed as a combined overview.
+    - Users have the option to enable segmented views, displaying separate metrics for urban and highway driving.
+    - Segmented trip summaries and fuel efficiency metrics can be viewed for urban and highway contexts over daily, weekly, and monthly timeframes.
+
+- **Data Utilization**:
+  - The input data and segmented trip details enable the system to:
+    - Tailor feedback to the vehicle’s fuel type and classification.
+    - Provide precise insights into fuel usage and driving performance for urban and highway conditions.
+    - Allow users to decide whether to focus on combined or segmented views, enhancing usability and customization.
+
 ## Non-Functional Requirements
 
 ### Costs
