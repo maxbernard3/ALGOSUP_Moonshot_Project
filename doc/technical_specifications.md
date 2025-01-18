@@ -43,9 +43,6 @@ This document outlines the technical architecture, hardware, software, and metho
   - [7. Security and Privacy](#7-security-and-privacy)
     - [Security Features](#security-features)
     - [Privacy Considerations](#privacy-considerations)
-  - [8. Assumptions and Constraints](#8-assumptions-and-constraints)
-    - [Assumptions](#assumptions)
-    - [Constraints](#constraints)
 
 ---
 
@@ -908,39 +905,28 @@ Firebase Realtime Database is a cloud-hosted NoSQL database that stores data in 
 - Minimalistic UI focused on key metrics.
 
 ---
-
 ## 6. Performance and Scalability
 
 ### Performance Goals
-- App load time: <5 seconds.
-- BLE pairing time: <10 seconds.
-- Real-time data upload latency: <2 seconds.
+
+- **Application Load Time**: Aim for the app to load within 5 seconds to enhance user experience.
+- **BLE Pairing Time**: Ensure Bluetooth Low Energy (BLE) devices pair within 10 seconds for seamless connectivity.
+- **Real-Time Data Upload Latency**: Maintain data upload latency under 2 seconds to support real-time interactions.
 
 ### Scalability
-- Backend must handle up to 10,000 active users.
-- Firebase auto-scaling ensures smooth operation during peak usage.
 
----
+Given the anticipated user base of up to 100 users, the scalability requirements are modest. Firebase's Realtime Database and Cloud Firestore are well-suited for small to medium-sized applications, offering sufficient capacity without the need for complex scaling strategies. Firebase's free tier can effectively support your prototype, providing essential services like hosting, authentication, and real-time databases without upfront costs. 
 
 ## 7. Security and Privacy
 
 ### Security Features
-- End-to-End Encryption for BLE and Firebase data transfer.
-- User authentication with 2FA.
-- GDPR compliance for user data.
+
+- **Data Encryption**: Implement end-to-end encryption for all data transmitted between the app, BLE devices, and Firebase to protect against unauthorized access.
+- **User Authentication**: Utilize Firebase's built-in authentication methods, such as email/password and OAuth providers, to verify user identities. While two-factor authentication (2FA) adds an extra layer of security, it may be optional at this stage due to the limited user base.
 
 ### Privacy Considerations
-- Anonymized leaderboard data.
-- User-controlled data sharing settings.
 
----
-
-## 8. Assumptions and Constraints
-
-### Assumptions
-- Vehicles are OBD2-compliant.
-- Users have modern Android smartphones with Bluetooth support.
-
-### Constraints
-- Hardware budget limited to €300.
-- App restricted to Android in initial release.
+- **GDPR Compliance**: As your app will handle personal data of users within the European Union, ensure compliance with the General Data Protection Regulation (GDPR). Key steps include:
+  - **Data Minimization**: Collect only the data necessary for the app's functionality. 
+  - **User Consent**: Obtain explicit consent from users before collecting their data, providing clear information on how it will be used. 
+  - **Data Access and Deletion**: Allow users to access, correct, or request deletion of their personal data.
