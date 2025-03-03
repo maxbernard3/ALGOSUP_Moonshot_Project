@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import './shared/bottom_nav_bar.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FriendGroupsPage extends StatefulWidget {
   const FriendGroupsPage({super.key});
@@ -15,7 +16,7 @@ class _FriendGroupsPageState extends State<FriendGroupsPage> {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _scrollKey = GlobalKey();
 
-  // Helper to generate a random string of a given length.
+// Helper to generate a random string of a given length.
   String getRandomString(int length, Random random) {
     const availableChars =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -23,25 +24,33 @@ class _FriendGroupsPageState extends State<FriendGroupsPage> {
         (_) => availableChars[random.nextInt(availableChars.length)]).join();
   }
 
-  // Loads (or creates) the leaderboard.json with random data.
+// Get the path for storing the leaderboard file
+  Future<String> getLeaderboardFilePath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/leaderboard.json';
+  }
+
+// Loads (or creates) the leaderboard.json with random data.
   Future<List<dynamic>> loadLeaderboard() async {
-    final file = File('leaderboard.json'); // Using a relative file path.
+    final filePath = await getLeaderboardFilePath();
+    final file = File(filePath);
+
     if (await file.exists()) {
       final content = await file.readAsString();
       return jsonDecode(content);
     } else {
       final random = Random();
-      // Pick one random index out of 100 for the user entry.
       int userIndex = random.nextInt(100);
       List<Map<String, dynamic>> data = List.generate(100, (index) {
         int nameLength = random.nextInt(6) + 5; // length between 5 and 10.
         return {
           "name": getRandomString(nameLength, random),
-          "average_mpg": (random.nextDouble() * 50 + 10), // ~10 to 60 MPG.
-          "vehicle_category": random.nextInt(4), // 0 to 3.
-          "user": index == userIndex, // one entry is user:true.
+          "average_mpg": (random.nextDouble() * 50 + 10),
+          "vehicle_category": random.nextInt(4),
+          "user": index == userIndex,
         };
       });
+
       await file.writeAsString(jsonEncode(data));
       return data;
     }

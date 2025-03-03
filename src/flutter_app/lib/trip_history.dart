@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import './shared/bottom_nav_bar.dart';
+import 'package:path_provider/path_provider.dart';
 
 // A simple data point representing a row from the CSV.
 class DataPoint {
@@ -30,7 +31,9 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
   }
 
   Future<void> _initFiles() async {
-    final Directory dir = Directory('driving_data');
+    final directory = await getApplicationDocumentsDirectory();
+
+    final Directory dir = Directory('${directory.path}/driving_data');
     if (!await dir.exists()) {
       await dir.create();
     }
