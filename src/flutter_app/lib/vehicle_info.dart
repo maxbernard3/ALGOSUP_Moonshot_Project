@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class VehicleInfoScreen extends StatefulWidget {
+  const VehicleInfoScreen({super.key});
+
   @override
-  _VehicleInfoScreenState createState() => _VehicleInfoScreenState();
+  State<VehicleInfoScreen> createState() => _VehicleInfoScreenState();
 }
 
 class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
