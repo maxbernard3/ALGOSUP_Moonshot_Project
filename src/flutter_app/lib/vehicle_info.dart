@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VehicleInfoScreen extends StatefulWidget {
   const VehicleInfoScreen({super.key});
@@ -9,6 +13,7 @@ class VehicleInfoScreen extends StatefulWidget {
 
 class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   // Dropdown selections
   String? _selectedVehicleType;
@@ -19,12 +24,54 @@ class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
   final List<String> _fuelTypes = ['Diesel', 'Hybrid', 'E85', 'Petrol'];
 
   // Controller for vehicle age
-  final _vehicleAgeController = TextEditingController();
+  final _yearOfRegistrationController = TextEditingController();
 
   @override
   void dispose() {
-    _vehicleAgeController.dispose();
+    _yearOfRegistrationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _dataSave() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      String? uid;
+
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        uid = currentUser.uid;
+      } else {
+        return;
+      }
+
+      // Save additional user details in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'yearOfRegistration': _yearOfRegistrationController.text.trim(),
+        'VehicleType': _selectedVehicleType,
+        'FuelType': _selectedFuelType,
+      });
+      if (!mounted) return;
+
+      // Navigate to the next page using a post frame callback to ensure context is valid
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/home', (Route<dynamic> route) => false);
+      });
+    } on FirebaseAuthException catch (e) {
+      // Handle errors (e.g., show a dialog with e.message)
+      stderr.writeln('Error: ${e.message}');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -77,12 +124,12 @@ class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
               ),
               // Vehicle Age Input
               TextFormField(
-                controller: _vehicleAgeController,
-                decoration: InputDecoration(labelText: 'Age of the Vehicle'),
+                controller: _yearOfRegistrationController,
+                decoration: InputDecoration(labelText: 'Year of registration'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the age of the vehicle';
+                    return 'Please enter the registration year of the vehicle';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -91,16 +138,12 @@ class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
                 },
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                child: Text("Submit"),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Navigate to the placeholder home page.
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', (Route<dynamic> route) => false);
-                  }
-                },
-              ),
+              _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _dataSave,
+                      child: Text("Next"),
+                    ),
             ],
           ),
         ),

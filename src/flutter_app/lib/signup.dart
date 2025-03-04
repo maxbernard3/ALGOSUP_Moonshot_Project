@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,7 +66,7 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     } on FirebaseAuthException catch (e) {
       // Handle errors (e.g., show a dialog with e.message)
-      print('Error: ${e.message}');
+      stderr.writeln('Error: ${e.message}');
     } finally {
       if (mounted) {
         setState(() {
