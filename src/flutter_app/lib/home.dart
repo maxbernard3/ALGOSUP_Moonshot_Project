@@ -1,33 +1,53 @@
+// HOME PAGE: home_page.dart
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import './shared/bottom_nav_bar.dart';
 import 'package:path_provider/path_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  Future<Map<String, dynamic>> loadData() async {
-    // 1. Get the application's documents directory, which is a safe place to store files.
-    final directory = await getApplicationDocumentsDirectory();
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-    // 2. Construct the full file path by appending 'data.json' to the directory path.
+class _HomePageState extends State<HomePage> {
+  Future<Map<String, dynamic>> loadData() async {
+    final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/data.json');
 
-    // 3. Check if the file already exists in that directory.
     if (await file.exists()) {
-      // 3a. If it exists, read the entire file content as a string.
       final content = await file.readAsString();
-      // 3b. Decode the JSON string into a Dart Map and return it.
       return jsonDecode(content);
     } else {
-      // 4. If the file doesn't exist, define a default data Map.
-      final defaultData = {"paired": false};
-      // 5. Convert the default Map to a JSON string and write it to the file.
+      // Initialize both paired and start flags
+      final defaultData = {
+        'paired': false,
+        'start': false,
+      };
       await file.writeAsString(jsonEncode(defaultData));
-      // 6. Return the default data Map.
       return defaultData;
     }
+  }
+
+  Future<void> _toggleStart(bool currentStart) async {
+    //wait half a second
+    await Future.delayed(const Duration(milliseconds: 400));
+
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/data.json');
+    Map<String, dynamic> data = {};
+
+    if (await file.exists()) {
+      final contents = await file.readAsString();
+      data = jsonDecode(contents) as Map<String, dynamic>;
+    }
+
+    data['start'] = !currentStart;
+    await file.writeAsString(jsonEncode(data));
+
+    if (mounted) setState(() {});
   }
 
   @override
@@ -38,39 +58,40 @@ class HomePage extends StatelessWidget {
       body: FutureBuilder<Map<String, dynamic>>(
         future: loadData(),
         builder: (context, snapshot) {
-          // Show a loader while reading the file.
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
-          // Handle error state.
           if (snapshot.hasError) {
-            return Center(child: Text('Error loading data'));
+            return const Center(child: Text('Error loading data'));
           }
-          // Once data is available, check the "paired" flag.
-          if (snapshot.hasData) {
-            bool paired = snapshot.data?['paired'] ?? false;
-            if (!paired) {
-              // If not paired, show the pairing button.
-              return Center(
-                child: ElevatedButton.icon(
-                  icon: Icon(Icons.bluetooth),
-                  label: Text('Pair Device'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pairing_page');
-                  },
-                ),
-              );
-            }
-            // If already paired, show the default home content.
+          if (!snapshot.hasData) {
+            return const Center(child: Text('No data found'));
+          }
+
+          final data = snapshot.data!;
+          final paired = data['paired'] as bool? ?? false;
+
+          if (!paired) {
             return Center(
-              child: Text(
-                'Home Page Content',
-                style: TextStyle(fontSize: 24),
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.bluetooth),
+                label: const Text('Pair Device'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/pairing_page')
+                      .then((_) => setState(() {}));
+                },
               ),
             );
           }
-          // Fallback UI.
-          return Center(child: Text('No data found'));
+
+          final started = data['start'] as bool? ?? false;
+          return Center(
+            child: ElevatedButton.icon(
+              icon: Icon(started ? Icons.stop : Icons.play_arrow),
+              label: Text(started ? 'Stop' : 'Start'),
+              onPressed: () => _toggleStart(started),
+            ),
+          );
         },
       ),
     );
