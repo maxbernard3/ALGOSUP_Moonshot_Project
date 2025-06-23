@@ -45,7 +45,11 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlutterLogo(size: 100.0),
+              Image.asset(
+                'assets/images/ecodriving.png',
+                width: 100.0,
+                height: 100.0,
+              ),
               SizedBox(height: 50.0),
               ElevatedButton(
                 onPressed: () {
