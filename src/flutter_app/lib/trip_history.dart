@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import './shared/bottom_nav_bar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path/path.dart' as p;
+import 'dart:convert' show json;
 
 // A simple data point representing a row from the CSV.
 class DataPoint {
@@ -24,65 +27,68 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
   List<DataPoint> _tripData = [];
   String _currentTripFileName = '';
 
+  // --- Viewport state (X only) ---
+  // Fractional start (0..1) of the visible window over the full time extent.
+  double _windowStartFrac = 0.0;
+  // Fractional span (0..1) of the visible window; 1/zoom. 1.0 = fully zoomed out.
+  double _windowSpanFrac = 1.0;
+
+  // Gesture anchors
+  double _gestureStartWindowStartFrac = 0.0;
+  double _gestureStartWindowSpanFrac = 1.0;
+
+  // For layout queries during gestures
+  final GlobalKey _paintAreaKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     _initFiles();
   }
 
-  Future<void> _initFiles() async {
-    final directory = await getApplicationDocumentsDirectory();
+  Future<void> _seedCsvs({bool overwrite = true}) async {
+    final docs = await getApplicationDocumentsDirectory();
+    final dir = Directory('${docs.path}/driving_data');
+    if (!await dir.exists()) await dir.create(recursive: true);
 
-    final Directory dir = Directory('${directory.path}/driving_data');
-    if (!await dir.exists()) {
-      await dir.create();
-    }
-    // Get list of CSV files in the directory.
-    _tripFiles =
-        dir.listSync().where((entity) => entity.path.endsWith('.csv')).toList();
-    // If there are fewer than 5 CSV files, generate new ones.
-    if (_tripFiles.length < 5) {
-      await _generateCSVFiles(dir);
-      _tripFiles = dir
-          .listSync()
-          .where((entity) => entity.path.endsWith('.csv'))
-          .toList();
-    }
-    // Sort files by name.
-    _tripFiles.sort((a, b) => a.path.compareTo(b.path));
-    setState(() {});
-  }
+    // Load the list of assets and filter to assets/driving_data/*.csv
+    final manifestJson = await rootBundle.loadString('AssetManifest.json');
+    final Map<String, dynamic> manifest = json.decode(manifestJson);
+    final assetCsvs = manifest.keys.where(
+      (k) => k.startsWith('assets/driving_data/') && k.endsWith('.csv'),
+    );
 
-  // Format a DateTime as YYYY-MM-DD.
-  String _formatDate(DateTime dt) {
-    String month = dt.month.toString().padLeft(2, '0');
-    String day = dt.day.toString().padLeft(2, '0');
-    return '${dt.year}-$month-$day';
-  }
+    for (final assetPath in assetCsvs) {
+      final data = await rootBundle.load(assetPath);
+      final out = File(p.join(dir.path, p.basename(assetPath)));
 
-  // Generate 5 CSV files for 5 trips (one for each of the last 5 days).
-  Future<void> _generateCSVFiles(Directory dir) async {
-    final Random random = Random();
-    for (int i = 0; i < 5; i++) {
-      DateTime tripDate = DateTime.now().subtract(Duration(days: i));
-      String fileName = 'driving_data_${_formatDate(tripDate)}.csv';
-      File file = File('${dir.path}${Platform.pathSeparator}$fileName');
-      // Build CSV content.
-      StringBuffer sb = StringBuffer();
-      sb.writeln('date_time,instant_mpg');
-      // Generate 200 data points, starting at 8:00 AM.
-      DateTime startTime =
-          DateTime(tripDate.year, tripDate.month, tripDate.day, 8, 0, 0);
-      for (int j = 0; j < 200; j++) {
-        DateTime timestamp = startTime.add(Duration(minutes: j));
-        String ts =
-            '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')} '
-            '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}:${timestamp.second.toString().padLeft(2, '0')}';
-        double mpg = 10 + random.nextDouble() * 50; // MPG between 10 and 60.
-        sb.writeln('$ts,$mpg');
+      if (!overwrite && await out.exists()) {
+        continue;
       }
-      await file.writeAsString(sb.toString());
+      await out.writeAsBytes(
+        data.buffer.asUint8List(),
+        flush: true,
+        mode: FileMode.write,
+      );
     }
+  }
+
+  Future<void> _initFiles() async {
+    await _seedCsvs(overwrite: true); // <-- always overwrite
+
+    final directory = await getApplicationDocumentsDirectory();
+    final dir = Directory('${directory.path}/driving_data');
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+
+    _tripFiles = dir
+        .listSync()
+        .where((e) => e.path.toLowerCase().endsWith('.csv'))
+        .toList()
+      ..sort((a, b) => a.path.compareTo(b.path));
+
+    setState(() {});
   }
 
   // Parse a CSV file and return a list of DataPoint objects.
@@ -99,12 +105,15 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
           if (mpg != null) {
             points.add(DataPoint(timestamp, mpg));
           }
-        } catch (e) {
-          // Ignore any parsing errors.
-        }
+        } catch (_) {}
       }
     }
     return points;
+  }
+
+  void _resetViewport() {
+    _windowStartFrac = 0.0;
+    _windowSpanFrac = 1.0;
   }
 
   @override
@@ -126,9 +135,7 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(16),
-            ),
+            style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
             onPressed: () async {
               File file = File(filePath);
               List<DataPoint> data = await _loadTripData(file);
@@ -136,6 +143,7 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
                 _tripData = data;
                 _currentTripFileName = fileName;
                 _showGraph = true;
+                _resetViewport();
               });
             },
             child: Text(fileName),
@@ -145,57 +153,144 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
     );
   }
 
-  // Display the graph with axes for time and MPG.
+  // Display the graph with axes for time and MPG, with X-only zoom/pan.
   Widget _buildGraphView() {
-    return GestureDetector(
-      onTap: () {
-        // Tapping the graph returns to the trip list.
-        setState(() {
-          _showGraph = false;
-        });
-      },
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              _currentTripFileName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              child: CustomPaint(
-                painter: MPGGraphPainter(_tripData),
-                child: Container(),
+    // Margins used by the painter (must match painter constants)
+    const marginLeft = 40.0, marginRight = 10.0;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  _currentTripFileName,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              IconButton(
+                tooltip: 'Reset zoom',
+                onPressed: () => setState(_resetViewport),
+                icon: const Icon(Icons.refresh),
+              ),
+              IconButton(
+                tooltip: 'Back to trips',
+                onPressed: () {
+                  setState(() => _showGraph = false);
+                },
+                icon: const Icon(Icons.list),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final chartWidth =
+                    constraints.maxWidth - marginLeft - marginRight;
+
+                return GestureDetector(
+                  onScaleStart: (details) {
+                    _gestureStartWindowStartFrac = _windowStartFrac;
+                    _gestureStartWindowSpanFrac = _windowSpanFrac;
+                  },
+                  onScaleUpdate: (details) {
+                    if (_tripData.isEmpty) return;
+
+                    // Limit zoom levels.
+                    const double minSpan = 1 / 100.0; // max 100x zoom in
+                    const double maxSpan = 1.0; // fully zoomed out
+
+                    // Compute f = focal position in [0,1] across plotting area.
+                    final renderBox = _paintAreaKey.currentContext
+                        ?.findRenderObject() as RenderBox?;
+                    final local = renderBox?.globalToLocal(details.focalPoint);
+                    final double f = () {
+                      if (local == null) return 0.5;
+                      final x = (local.dx - marginLeft) / chartWidth;
+                      return x.clamp(0.0, 1.0);
+                    }();
+
+                    // 1) Zoom relative to gesture start (pinch scale)
+                    double newSpan =
+                        (_gestureStartWindowSpanFrac / details.scale)
+                            .clamp(minSpan, maxSpan);
+
+                    // Keep focal time fixed during zoom:
+                    final double targetFrac = _gestureStartWindowStartFrac +
+                        f * _gestureStartWindowSpanFrac;
+                    double newStart = targetFrac - f * newSpan;
+
+                    // 2) Pan for ANY pointer count (one- or two-finger translation)
+                    if (details.focalPointDelta.dx != 0) {
+                      final double dxPixels = details.focalPointDelta.dx;
+                      // Pan speed scales with current zoom (span).
+                      final double dxFrac = -(dxPixels / chartWidth) * newSpan;
+                      newStart += dxFrac;
+                    }
+
+                    // Clamp to [0, 1 - newSpan]
+                    newStart = newStart.clamp(0.0, 1.0 - newSpan);
+
+                    setState(() {
+                      _windowSpanFrac = newSpan;
+                      _windowStartFrac = newStart;
+                    });
+                  },
+                  child: RepaintBoundary(
+                    key: _paintAreaKey,
+                    child: CustomPaint(
+                      painter: MPGGraphPainter(
+                        _tripData,
+                        windowStartFrac: _windowStartFrac,
+                        windowSpanFrac: _windowSpanFrac,
+                      ),
+                      child: Container(), // expands to constraints
+                    ),
+                  ),
+                );
+              },
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Tap the graph to return to the trip list'),
-          )
-        ],
-      ),
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+          child: Text(
+              'Pinch to zoom horizontally, drag to pan. Y-scale stays fixed.'),
+        ),
+      ],
     );
   }
 }
 
 // A CustomPainter that draws an MPG-over-time graph with visible axes.
+// Y range is fixed to the full dataset; X window is controlled by windowStartFrac/windowSpanFrac.
 class MPGGraphPainter extends CustomPainter {
   final List<DataPoint> data;
-  MPGGraphPainter(this.data);
+  final double windowStartFrac; // 0..1
+  final double windowSpanFrac; // 0..1
+
+  MPGGraphPainter(
+    this.data, {
+    required this.windowStartFrac,
+    required this.windowSpanFrac,
+  });
+
+  // Margins must match those in _buildGraphView for correct gesture math.
+  static const double marginLeft = 40.0;
+  static const double marginRight = 10.0;
+  static const double marginTop = 10.0;
+  static const double marginBottom = 30.0;
 
   @override
   void paint(Canvas canvas, Size size) {
     if (data.isEmpty) return;
-
-    // Margins for the axes.
-    const double marginLeft = 40.0;
-    const double marginRight = 10.0;
-    const double marginTop = 10.0;
-    const double marginBottom = 30.0;
 
     final chartWidth = size.width - marginLeft - marginRight;
     final chartHeight = size.height - marginTop - marginBottom;
@@ -204,97 +299,122 @@ class MPGGraphPainter extends CustomPainter {
       ..color = Colors.black
       ..strokeWidth = 1.0;
 
-    // Draw x-axis.
+    // Draw axes.
     canvas.drawLine(
       Offset(marginLeft, size.height - marginBottom),
       Offset(size.width - marginRight, size.height - marginBottom),
       axisPaint,
     );
-    // Draw y-axis.
     canvas.drawLine(
       Offset(marginLeft, marginTop),
       Offset(marginLeft, size.height - marginBottom),
       axisPaint,
     );
 
-    // Determine min and max MPG.
+    // ---- Y scale: fixed to full dataset ----
     double minMPG = data.map((d) => d.mpg).reduce(min);
     double maxMPG = data.map((d) => d.mpg).reduce(max);
-    double mpgRange = maxMPG - minMPG;
-    if (mpgRange == 0) mpgRange = 1;
+    double mpgRange = max(1e-9, maxMPG - minMPG); // avoid div-by-zero
 
-    // Draw y-axis ticks and labels.
-    int yTicks = 5;
+    // Y ticks & labels.
+    const int yTicks = 5;
     final textStyle = const TextStyle(color: Colors.black, fontSize: 10);
     for (int i = 0; i <= yTicks; i++) {
       double tickValue = minMPG + (mpgRange / yTicks) * i;
       double yPos = marginTop +
           chartHeight -
           ((tickValue - minMPG) / mpgRange * chartHeight);
-      // Draw tick.
       canvas.drawLine(
         Offset(marginLeft - 5, yPos),
         Offset(marginLeft, yPos),
         axisPaint,
       );
-      // Draw label.
-      TextPainter tp = TextPainter(
+      final tp = TextPainter(
         text: TextSpan(text: tickValue.toStringAsFixed(1), style: textStyle),
         textAlign: TextAlign.right,
         textDirection: TextDirection.ltr,
-      );
-      tp.layout();
+      )..layout();
       tp.paint(canvas, Offset(marginLeft - 8 - tp.width, yPos - tp.height / 2));
     }
 
-    // Draw x-axis ticks and labels.
-    int xTicks = 5;
+    // ---- X window in time ----
+    final DateTime minT = data.first.timestamp.isBefore(data.last.timestamp)
+        ? data.first.timestamp
+        : data.map((d) => d.timestamp).reduce((a, b) => a.isBefore(b) ? a : b);
+    final DateTime maxT = data.first.timestamp.isAfter(data.last.timestamp)
+        ? data.first.timestamp
+        : data.map((d) => d.timestamp).reduce((a, b) => a.isAfter(b) ? a : b);
+    final totalMs =
+        max(1, maxT.millisecondsSinceEpoch - minT.millisecondsSinceEpoch);
+
+    final double startFrac = windowStartFrac.clamp(0.0, 1.0);
+    final double spanFrac = windowSpanFrac.clamp(0.0, 1.0);
+    final int viewStartMs =
+        minT.millisecondsSinceEpoch + (totalMs * startFrac).round();
+    final int viewEndMs = minT.millisecondsSinceEpoch +
+        (totalMs * (startFrac + spanFrac)).round();
+    final int viewRangeMs = max(1, viewEndMs - viewStartMs);
+
+    // X ticks based on time window.
+    const int xTicks = 5;
     for (int i = 0; i <= xTicks; i++) {
-      double fraction = i / xTicks;
-      double xPos = marginLeft + fraction * chartWidth;
-      // Draw tick.
+      final double frac = i / xTicks;
+      final double xPos = marginLeft + frac * chartWidth;
       canvas.drawLine(
         Offset(xPos, size.height - marginBottom),
         Offset(xPos, size.height - marginBottom + 5),
         axisPaint,
       );
-      // Determine corresponding data index.
-      int dataIndex = (fraction * (data.length - 1)).round();
-      DateTime time = data[dataIndex].timestamp;
-      String timeLabel =
-          '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-      TextPainter tp = TextPainter(
-        text: TextSpan(text: timeLabel, style: textStyle),
+      final tickMs = viewStartMs + (viewRangeMs * frac).round();
+      final t = DateTime.fromMillisecondsSinceEpoch(tickMs);
+      final label =
+          '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+      final tp = TextPainter(
+        text: TextSpan(text: label, style: textStyle),
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
-      );
-      tp.layout();
+      )..layout();
       tp.paint(
           canvas, Offset(xPos - tp.width / 2, size.height - marginBottom + 5));
     }
 
-    // Build the path for the MPG graph.
+    // Build path over visible window only.
     final path = Path();
-    for (int i = 0; i < data.length; i++) {
-      double x = marginLeft + (i / (data.length - 1)) * chartWidth;
-      double y = marginTop +
-          chartHeight -
-          ((data[i].mpg - minMPG) / mpgRange * chartHeight);
-      if (i == 0) {
+
+    // Ensure data sorted by time for correct rendering.
+    final sorted = [...data]
+      ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+
+    bool moved = false;
+    for (final d in sorted) {
+      final ms = d.timestamp.millisecondsSinceEpoch;
+      if (ms < viewStartMs || ms > viewEndMs) continue;
+
+      final double xFrac = (ms - viewStartMs) / viewRangeMs;
+      final double x = marginLeft + xFrac * chartWidth;
+      final double y =
+          marginTop + chartHeight - ((d.mpg - minMPG) / mpgRange * chartHeight);
+      if (!moved) {
         path.moveTo(x, y);
+        moved = true;
       } else {
         path.lineTo(x, y);
       }
     }
-    final graphPaint = Paint()
-      ..color = Colors.blue
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke;
-    canvas.drawPath(path, graphPaint);
+
+    if (moved) {
+      final graphPaint = Paint()
+        ..color = Colors.blue
+        ..strokeWidth = 2.0
+        ..style = PaintingStyle.stroke;
+      canvas.drawPath(path, graphPaint);
+    }
   }
 
   @override
-  bool shouldRepaint(covariant MPGGraphPainter oldDelegate) {
-    return oldDelegate.data != data;
+  bool shouldRepaint(covariant MPGGraphPainter old) {
+    return old.data != data ||
+        old.windowStartFrac != windowStartFrac ||
+        old.windowSpanFrac != windowSpanFrac;
   }
 }

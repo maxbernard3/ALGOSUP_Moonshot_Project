@@ -64,6 +64,13 @@ class _SplashScreenState extends State<SplashScreen> {
                 },
                 child: Text('Signup'),
               ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
+                child: Text('DEBUG skip'),
+              ),
             ],
           ),
         ),
