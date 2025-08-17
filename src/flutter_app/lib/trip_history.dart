@@ -158,6 +158,15 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
     // Margins used by the painter (must match painter constants)
     const marginLeft = 40.0, marginRight = 10.0;
 
+    List<String> advices = [
+      "Accelerate gently and smoothly instead of flooring the gas.",
+      "Anticipate traffic flow to reduce unnecessary braking.",
+      "Shift up early when driving a manual, avoid high RPMs.",
+      "Keep tires properly inflated to reduce rolling resistance.",
+      "Avoid prolonged idling—turn off the engine if stopped for long.",
+      "Keep your vehicle well maintained (oil, filters, spark plugs).",
+    ];
+
     return Column(
       children: [
         Padding(
@@ -259,10 +268,25 @@ class _TripHistoryPageState extends State<TripHistoryPage> {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-          child: Text(
-              'Pinch to zoom horizontally, drag to pan. Y-scale stays fixed.'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/map');
+                },
+                child: Text('See map'),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                advices[Random().nextInt(advices.length)],
+                style: const TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ],
     );

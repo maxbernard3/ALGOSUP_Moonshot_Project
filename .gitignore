@@ -60,7 +60,6 @@ crashlytics-build.properties
 
 *.DS_Store
 
-*.csv
 *.json
 
 # Do not remove or rename entries in this file, only add new ones

@@ -8,6 +8,7 @@ import 'pairing_page.dart';
 import 'friend_groups.dart';
 import 'routes_page.dart';
 import 'trip_history.dart';
+import 'map.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/friend_groups': (context) => FriendGroupsPage(),
         '/routes_page': (context) => RoutesPage(),
         '/trip_history': (context) => TripHistoryPage(),
+        '/map': (context) => MapPage(),
       },
     );
   }
