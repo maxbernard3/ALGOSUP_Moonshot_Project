@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_app/shared/bottom_nav_bar.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
@@ -239,36 +240,39 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     if (_loading) return const Center(child: CircularProgressIndicator());
     if (_error != null) return Center(child: Text('Error: $_error'));
-
-    return FlutterMap(
-      mapController: _map,
-      options: const MapOptions(
-        initialCenter: LatLng(48.8566, 2.3522), // Paris fallback
-        initialZoom: 12,
-      ),
-      children: [
-        TileLayer(
-          urlTemplate:
-              'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-          subdomains: const ['a', 'b', 'c', 'd'],
-          userAgentPackageName: 'com.example.app',
+    return CustomScaffold(
+      title: 'Map',
+      currentIndex: 2,
+      body: FlutterMap(
+        mapController: _map,
+        options: const MapOptions(
+          initialCenter: LatLng(48.8566, 2.3522), // Paris fallback
+          initialZoom: 12,
         ),
-        PolylineLayer(polylines: _coloredSegments),
-        if (_from != null)
-          MarkerLayer(markers: [
-            Marker(
-                point: _from!,
-                width: 40,
-                height: 40,
-                child: const Icon(Icons.location_on)),
-            if (_to != null)
+        children: [
+          TileLayer(
+            urlTemplate:
+                'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            subdomains: const ['a', 'b', 'c', 'd'],
+            userAgentPackageName: 'com.example.app',
+          ),
+          PolylineLayer(polylines: _coloredSegments),
+          if (_from != null)
+            MarkerLayer(markers: [
               Marker(
-                  point: _to!,
+                  point: _from!,
                   width: 40,
                   height: 40,
-                  child: const Icon(Icons.flag)),
-          ]),
-      ],
+                  child: const Icon(Icons.location_on)),
+              if (_to != null)
+                Marker(
+                    point: _to!,
+                    width: 40,
+                    height: 40,
+                    child: const Icon(Icons.flag)),
+            ]),
+        ],
+      ),
     );
   }
 }
